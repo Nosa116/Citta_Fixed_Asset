@@ -7,7 +7,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
     ValueChanged<String> onChanged,
   ) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
           decoration: InputDecoration(
@@ -35,7 +35,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 Widget buildTextField(String label, TextEditingController controller) {
   return Padding(
-    padding: EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(8.0),
     child: TextField(
       decoration: InputDecoration(
         labelText: label,

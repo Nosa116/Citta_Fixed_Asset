@@ -8,7 +8,7 @@ class Edit extends StatefulWidget {
   final String assetTag;
   final String description;
 
-  const Edit({
+  const Edit({super.key, 
     required this.assetTag,
     required this.description,
   });
@@ -160,18 +160,18 @@ class _EditState extends State<Edit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit'),
+        title: const Text('Edit'),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (assetDetails != null) ...[
                 Text(
                   'Asset Tag: ${assetDetails!.assetTag}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -204,15 +204,15 @@ class _EditState extends State<Edit> {
                 buildTextField('manufacture', _manufacturer),
                 buildTextField('location', _sourcelocation),
                 buildTextField('model', _model),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: _isButtonEnabled ? _sendRequestForApproval : null,
-                  child: Text('Request for Approval'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
+                  child: const Text('Request for Approval'),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 if (requestResult.isNotEmpty)
                   Text(
                     requestResult,
@@ -236,7 +236,7 @@ class _EditState extends State<Edit> {
     ValueChanged<String> onChanged,
   ) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
           decoration: InputDecoration(
@@ -264,7 +264,7 @@ class _EditState extends State<Edit> {
 
 Widget buildTextField(String label, TextEditingController controller) {
   return Padding(
-    padding: EdgeInsets.all(8.0),
+    padding: const EdgeInsets.all(8.0),
     child: TextField(
       decoration: InputDecoration(
         labelText: label,

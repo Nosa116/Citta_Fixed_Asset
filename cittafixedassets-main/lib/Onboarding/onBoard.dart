@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../Others/Constant.dart';
 import 'OnboardPage1.dart';
 import 'OnBoardPage2.dart';
-import 'package:cittafixedassets/Screen/Home.dart';
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({Key? key}) : super(key: key);
 
@@ -15,7 +14,7 @@ class OnBoardScreen extends StatefulWidget {
 
 class _OnBoardScreenState extends State<OnBoardScreen> {
   //PageView Controller
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   //indicates whether we are on the last page
   bool indicateLastPage = false;
 
@@ -37,7 +36,7 @@ _onboardstate()async {
                 indicateLastPage = (index == 1);
               });
             },
-            children: [
+            children: const [
               //Screen One
               Onboard1(),
               //Screen Two
@@ -47,12 +46,12 @@ _onboardstate()async {
           //Done 
           indicateLastPage
               ?Padding(
-  padding: EdgeInsets.only(right: 20.0), // Adjust the value as needed
+  padding: const EdgeInsets.only(right: 20.0), // Adjust the value as needed
   child: GestureDetector(
     child: Align(
       alignment: Alignment.bottomRight,
       child: Container(
-        margin: EdgeInsets.only(bottom: 50.0),
+        margin: const EdgeInsets.only(bottom: 50.0),
         child: ElevatedButton(
             style: ButtonStyle(
   backgroundColor: MaterialStateColor.resolveWith((states) => ored),
@@ -62,7 +61,7 @@ _onboardstate()async {
             await _onboardstate();
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
             );
           },
         ),
@@ -73,12 +72,12 @@ _onboardstate()async {
               : 
               //Next Button
              Padding(
-  padding: EdgeInsets.only(right: 20.0), // Adjust the value as needed
+  padding: const EdgeInsets.only(right: 20.0), // Adjust the value as needed
   child: GestureDetector(
     child: Align(
       alignment: Alignment.bottomRight,
       child: Container(
-        margin: EdgeInsets.only(bottom: 50.0),
+        margin: const EdgeInsets.only(bottom: 50.0),
         child: ElevatedButton(
             style: ButtonStyle(
   backgroundColor: MaterialStateColor.resolveWith((states) => ored),
@@ -86,7 +85,7 @@ _onboardstate()async {
           child: const Text('Next'),
           onPressed: () {
             _controller.nextPage(
-              duration: Duration(milliseconds: 500),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.ease,
             );
           },

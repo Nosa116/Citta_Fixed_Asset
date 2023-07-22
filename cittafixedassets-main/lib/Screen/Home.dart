@@ -34,44 +34,46 @@ class _HomeScreenState extends State<HomeScreen> {
   });
 }
 
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'Images/scanner.svg',
-              width: 500,
-              height: 500,
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateColor.resolveWith((states) => ored),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                'Images/scanner.svg',
+                width: 500,
+                height: 500,
               ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Searchscreen()),
-                );
-              },
-              child: Text('Search'),
-            ),
-            SizedBox(height: 5),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateColor.resolveWith((states) => ored),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => ored),
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Searchscreen()),
+                  );
+                },
+                child: const Text('Search'),
               ),
-              onPressed: () {
-                scanBarcode();
-              },
-              child: Text('Scan'),
-            ),
-          ],
+              const SizedBox(height: 5),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => ored),
+                ),
+                onPressed: () {
+                  scanBarcode();
+                },
+                child: const Text('Scan'),
+              ),
+            ],
+          ),
         ),
       ),
     );

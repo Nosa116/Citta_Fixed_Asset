@@ -9,7 +9,7 @@ class Details extends StatefulWidget {
   final String assetTag;
   final String description;
 
-  const Details({required this.assetTag, required this.description});
+  const Details({super.key, required this.assetTag, required this.description});
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -68,14 +68,14 @@ Future<AssetDetails> fetchAssetDetails(
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text('Details'),
+      title: const Text('Details'),
       backgroundColor: Colors.red,
       actions: [
         IconButton(
           onPressed: () {
             navigateToEditScreen();
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
         ),
       ],
     ),
@@ -83,13 +83,13 @@ Widget build(BuildContext context) {
       future: assetDetails,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData) {
           final assetData = snapshot.data!;
           return Padding(
-  padding: EdgeInsets.all(16.0),
+  padding: const EdgeInsets.all(16.0),
   child: ListView.builder(
     itemCount: assetData.toJson().length,
     itemBuilder: (context, index) {
@@ -100,7 +100,7 @@ Widget build(BuildContext context) {
           TextField(
   controller: TextEditingController(text: '${field.value}'),
   enabled: false,
-   style: TextStyle(color: Colors.black),
+   style: const TextStyle(color: Colors.black),
    keyboardType: TextInputType.multiline,
 minLines: 1,
 maxLines: 20,
@@ -117,7 +117,7 @@ maxLines: 20,
   ),
 );
         } else {
-          return Text('No data available');
+          return const Text('No data available');
         }
       },
     ),

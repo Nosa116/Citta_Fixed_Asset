@@ -35,7 +35,7 @@ Future<void> login() async {
         // Login successful
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
             setState(() {
@@ -61,7 +61,7 @@ Future<void> login() async {
  @override
 Widget build(BuildContext context) {
   return Scaffold(
-    backgroundColor: Color(0xFFFFFAFA),
+    backgroundColor: const Color(0xFFFFFAFA),
  body: SingleChildScrollView(
   padding: const EdgeInsets.all(20.0),
   child: Align(
@@ -69,15 +69,15 @@ Widget build(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 50),
-        Text(
+        const SizedBox(height: 50),
+        const Text(
           'Sign In',
           style: TextStyle(
             fontSize: 54,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
           'Please log in to continue',
           style: TextStyle(
@@ -85,7 +85,7 @@ Widget build(BuildContext context) {
            color:  lgrey,
           ),
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
           Container(
             decoration: BoxDecoration(
               color: Colors.grey[200],
@@ -110,7 +110,7 @@ Widget build(BuildContext context) {
 ),
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
 Container(
   decoration: BoxDecoration(
     color: Colors.grey[200],
@@ -126,7 +126,7 @@ child: Padding(
     decoration: InputDecoration(
       border: InputBorder.none,
       hintText: 'Password',
-      prefixIcon: IconTheme(
+      prefixIcon: const IconTheme(
         data: IconThemeData(color: Colors.grey), // Set the prefix icon color to grey
         child: Icon(Icons.lock),
       ),
@@ -137,7 +137,7 @@ child: Padding(
           });
         },
         child: IconTheme(
-          data: IconThemeData(color: Colors.grey), // Set the suffix icon color to grey
+          data: const IconThemeData(color: Colors.grey), // Set the suffix icon color to grey
           child: Icon(
             isPasswordVisible ? Icons.visibility : Icons.visibility_off,
           ),
@@ -148,14 +148,14 @@ child: Padding(
 ),
 ),
 
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           if (loginFailed)
             Text(
               errorMessage,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: ored ,
               borderRadius: BorderRadius.circular(20),
@@ -176,7 +176,7 @@ child: Padding(
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Align(
       alignment: Alignment.center,
       child: Text(

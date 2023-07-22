@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../Others/FlutterModel.dart';
 
 class Onboard2 extends StatefulWidget {
+  const Onboard2({super.key});
+
   @override
   _Onboard2State createState() => _Onboard2State();
 }
@@ -63,7 +65,7 @@ class _Onboard2State extends State<Onboard2> {
   Widget _buildContent(BuildContext context, AsyncSnapshot<List<Organisation>> snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return Container(
-        child: Center(
+        child: const Center(
           child: CircularProgressIndicator(),
         ),
       );
@@ -105,8 +107,8 @@ class _Onboard2State extends State<Onboard2> {
   ),
   child: DropdownButton<String>(
     value: selectedOrg,
-    hint: Text('Select Organisation'),
-    underline: SizedBox(),
+    hint: const Text('Select Organisation'),
+    underline: const SizedBox(),
     onChanged: (String? newValue) {
       setState(() {
         selectedOrg = newValue;
@@ -127,7 +129,7 @@ class _Onboard2State extends State<Onboard2> {
 return Scaffold(
   body: Column(
     children: [
-       SizedBox(height: 40), 
+       const SizedBox(height: 40), 
       _buildSvgImage(),
       Expanded(
         child: FutureBuilder<List<Organisation>>(
