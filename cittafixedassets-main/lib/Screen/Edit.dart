@@ -1,159 +1,136 @@
 import 'dart:convert';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import '../Others/FlutterModel.dart';
 
 class Edit extends StatefulWidget {
-  final String assetTag;
-  final String description;
+  final String fixedAssetCode;
 
-  const Edit({super.key, 
-    required this.assetTag,
-    required this.description,
-  });
+  const Edit({Key? key, required this.fixedAssetCode}) : super(key: key);
 
   @override
-  State<Edit> createState() => _EditState();
+  _EditState createState() => _EditState();
 }
 
 class _EditState extends State<Edit> {
-  final TextEditingController _description = TextEditingController();
-  final TextEditingController _fixedAssetCode = TextEditingController();
-  final TextEditingController _manufacturer = TextEditingController();
-  final TextEditingController _model = TextEditingController();
-  final TextEditingController _specs = TextEditingController();
-  final TextEditingController _sourcelocation = TextEditingController();
-  final TextEditingController _sourcebranch = TextEditingController();
-  final TextEditingController _staff = TextEditingController();
+  late AssetDetails _assetData = AssetDetails(
+    assetTag: '',
+    description: '',
+    fixedAssetCode: '',
+    manufacturer: '',
+    model: '',
+    assetspecs: '',
+    supplier: '',
+    assetUser: '',
+    assetDetail: '',
+    assetManufacturersNum: '',
+    parentAssetCode: '',
+    lastMaintenanceDate: '',
+    purchaseDate: '',
+    assetLocation: '',
+    assetType: '',);
+  bool _isEditing = false;
+  late String _editedDescription; // Separate variable to hold edited description
 
-  AssetDetails? assetDetails;
-  late String assetUser;
-  List<String> staffNames = []; // List to store staff names
-  String selectedStaffName = ''; // Currently selected staff name
-
-  List<String> branchNames = []; // List to store branch names
-  String selectedBranchName = ''; // Currently selected branch name
-  String selectedstaffName = ''; // Currently selected branch name
-
-  bool requestFailed = false; // Variable to track if the request failed
-  String requestResult = '';
-  bool isDataFetched = false; // Variable to track if data fetching is complete
-  bool _isButtonEnabled = true; // Variable to track button's enabled state
+  // Add TextEditingController for other fields if needed
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _manufacturerController = TextEditingController();
+  TextEditingController _modelController = TextEditingController();
+  TextEditingController _specsController = TextEditingController();
+  TextEditingController _supplierController = TextEditingController();
+  TextEditingController _userController = TextEditingController();
+  TextEditingController _detailController = TextEditingController();
+  TextEditingController _manufacturerNoController = TextEditingController();
+  TextEditingController _parentCodeController = TextEditingController();
+  TextEditingController _lastMaintenanceDateController = TextEditingController();
+  TextEditingController _purchaseDateController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _typeController = TextEditingController();
+  
 
   @override
   void initState() {
     super.initState();
-    _description.text = widget.description;
-    fetchAssetDetails();
-    fetchData();
+    _editedDescription = ''; // Initialize the edited description
+    _fetchAssetDetails();
   }
 
-  Future<void> fetchAssetDetails() async {
-    final url =
-        'https://cittafixedassetphone-apim.azure-api.net/assetdetails?assetTag=${widget.assetTag}&assetName=${widget.description}';
-
+  Future<void> _fetchAssetDetails() async {
     try {
+      String url =
+          'https://citta.azure-api.net/Adron/api/FAsset/assetdetails?assetTag=0';
+          //FixedAssetCode=${widget.fixedAssetCode}';
       final response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        if (responseData is List && responseData.isNotEmpty) {
-          final assetJson = responseData[0];
-          assetDetails = AssetDetails.fromJson(assetJson);
-          if (isDataFetched) {
-            _fixedAssetCode.text = assetDetails!.fixedAssetCode;
-            _sourcelocation.text = assetDetails?.assetLocation ?? "unknown";
-            _manufacturer.text = assetDetails!.manufacturer;
-            _staff.text = assetDetails!.assetUser;
-            _model.text = assetDetails!.model;
-            _specs.text = assetDetails!.assetspecs;
-            //_model.text = assetDetails!.;
-          }
-          setState(() {});
-        } else {
-          print('No asset details found');
-        }
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error: $error');
-    }
-  }
-
-  Future<void> fetchData() async {
-    try {
-      final responseStaffs = await http.get(
-          Uri.parse(
-              'https://cittafixedassetphone-apim.azure-api.net/assetstaffs'));
-      final responseBranches = await http.get(
-          Uri.parse(
-              'https://cittafixedassetphone-apim.azure-api.net/assetbranches?branchcode=07'));
-
-      if (responseStaffs.statusCode == 200 &&
-          responseBranches.statusCode == 200) {
-        final List<dynamic> dataStaffs = json.decode(responseStaffs.body);
-        final List<dynamic> dataBranches =
-            json.decode(responseBranches.body);
-
+        final jsonResponse = json.decode(response.body);
+        final assetData = AssetDetails.fromJson(jsonResponse);
         setState(() {
-          staffNames = dataStaffs
-              .map((item) => item['staffName'].toString())
-              .toList(); // Extract staff names from the JSON response
-
-          branchNames = dataBranches
-              .map((item) => item['parameterName'].toString())
-              .toList(); // Extract branch names from the JSON response
-          isDataFetched = true; // Mark data fetching as complete
-          if (assetDetails != null) {
-            _fixedAssetCode.text = assetDetails?.fixedAssetCode ?? 'unknown';
-            _sourcelocation.text = assetDetails?.assetLocation ?? "unknown";
-            _manufacturer.text = assetDetails?.manufacturer ?? 'unknown';
-            _staff.text = assetDetails!.assetUser;
-            _model.text = assetDetails!.model;
-            _specs.text = assetDetails!.assetspecs;
-          }
+          _assetData = assetData;
+          _descriptionController.text = _assetData.description;
+          _editedDescription = _assetData.description; // Initialize the edited description
+          _manufacturerController.text = _assetData.manufacturer;
+          _modelController.text = _assetData.model;
+          _specsController.text = _assetData.assetspecs;
+          _supplierController.text = _assetData.supplier;
+          _userController.text = _assetData.assetUser;
+          _detailController.text = _assetData.assetDetail;
+          _manufacturerNoController.text = _assetData.assetManufacturersNum;
+          _parentCodeController.text = _assetData.parentAssetCode;
+          _lastMaintenanceDateController.text = _assetData.lastMaintenanceDate;
+          _purchaseDateController.text = _assetData.purchaseDate;
+          _locationController.text = _assetData.assetLocation;
+          _typeController.text = _assetData.assetType;
         });
       } else {
-        throw Exception('Failed to fetch data');
+        print("FAC is ${widget.fixedAssetCode}");
+        throw Exception('Failed to load asset details');
       }
     } catch (e) {
-      print(e);
+      print('Error fetching asset details: $e');
     }
   }
 
-  Future<void> _sendRequestForApproval() async {
-    setState(() {
-      _isButtonEnabled = false; // Disable the button to prevent multiple clicks
-    });
-
-    // Construct the request URL
-    final url = Uri.parse(
-        'https://cittafixedassetphone-apim.azure-api.net/EditAsset?fixedAssetCode=${_fixedAssetCode.text}&description=${_description.text}&specsTrans=${_specs.text}&modelTrans=${_model.text}&manufacturerTrans=${_manufacturer.text}&sourceUser=assetUser&sourceLocation=test&sourceBranch=${_sourcebranch.text}&targetLocation=&targetBranch=test&targetUser=test');
-
+  Future<void> _updateAssetDetails() async {
     try {
-      final response = await http.post(url);
-      if (response.statusCode == 200) {
-        // Request successful
-        setState(() {
-          requestResult = 'Request for approval sent successfully.';
-        });
-      } else {
-        // Request failed
-        setState(() {
-          requestResult = 'Failed to send request for approval.';
-        });
-      }
-    } catch (error) {
-      // Error occurred
-      setState(() {
-        requestResult = 'Error: $error';
-      });
-    }
+      // Prepare the updated data
+      AssetDetails updatedData = AssetDetails(
+        assetTag: _assetData.assetTag,
+        description: _editedDescription, // Use the edited description
+        fixedAssetCode: _assetData.fixedAssetCode,
+        manufacturer: _manufacturerController.text,
+        model: _modelController.text,
+        assetspecs: _specsController.text,
+        supplier: _supplierController.text,
+        assetUser: _userController.text,
+        assetDetail: _detailController.text,
+        assetManufacturersNum: _manufacturerNoController.text,
+        parentAssetCode: _parentCodeController.text,
+        lastMaintenanceDate: _lastMaintenanceDateController.text,
+        purchaseDate: _purchaseDateController.text,
+        assetLocation: _locationController.text,
+        assetType: _typeController.text,
+      );
 
-    setState(() {
-      _isButtonEnabled = true; // Enable the button after the request is sent
-    });
+      // Perform the API update request
+      // Adjust the URL and request type (PUT, POST, etc.) based on your API
+      String updateUrl = 'https://your_api_url_here';
+      final response = await http.put(
+        Uri.parse(updateUrl),
+        body: json.encode(updatedData.toJson()),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Show a success message or perform any other necessary actions
+        print('Asset details updated successfully!');
+      } else {
+        throw Exception('Failed to update asset details');
+      }
+    } catch (e) {
+      print('Error updating asset details: $e');
+    }
   }
 
   @override
@@ -161,117 +138,211 @@ class _EditState extends State<Edit> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit'),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (assetDetails != null) ...[
-                Text(
-                  'Asset Tag: ${assetDetails!.assetTag}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                buildTextField('Description', _description),
-                buildTextField('Fixed Asset Code', _fixedAssetCode),
-                buildTextField('Specifications', _specs),
-                               buildTextField('branch', _sourcebranch),
-                buildSearchList(
-                  branchNames,
-                  selectedBranchName,
-                  'Select Branch',
-                  (String newValue) {
-                    setState(() {
-                      selectedBranchName = newValue;
-                    });
-                  },
-                ),
-                buildTextField('Staff', _staff),
-                buildSearchList(
-                  staffNames,
-                  selectedStaffName,
-                  'Select Staff',
-                  (String newValue) {
-                    setState(() {
-                      selectedStaffName = newValue;
-                    });
-                  },
-                ),
-                buildTextField('manufacture', _manufacturer),
-                buildTextField('location', _sourcelocation),
-                buildTextField('model', _model),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _isButtonEnabled ? _sendRequestForApproval : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  child: const Text('Request for Approval'),
-                ),
-                const SizedBox(height: 16.0),
-                if (requestResult.isNotEmpty)
-                  Text(
-                    requestResult,
-                    style: TextStyle(
-                      color: requestFailed ? Colors.red : Colors.green,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-              ],
-            ],
+        backgroundColor: Colors.red,
+        actions: [
+          if (_isEditing)
+            IconButton(
+              onPressed: () {
+                _updateAssetDetails();
+                // Implement your logic to request approval here
+              },
+              icon: const Icon(Icons.request_page),
+            ),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isEditing = !_isEditing;
+              });
+            },
+            icon: Icon(_isEditing ? Icons.save : Icons.edit),
           ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            buildTextField(
+              'Asset Tag',
+              _assetData.assetTag,
+              enabled: false,
+            ),
+            buildTextField(
+              'Description',
+              _isEditing ? _editedDescription : _assetData.description,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _editedDescription = value; // Store the edited description
+                });
+              },
+            ),
+            buildTextField(
+              'Fixed Asset Code',
+              _assetData.fixedAssetCode,
+              enabled: false,
+            ),
+            buildTextField(
+              'Manufacturer',
+              _manufacturerController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.manufacturer = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Model',
+              _modelController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.model = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Specs',
+              _specsController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetspecs = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Supplier',
+              _supplierController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.supplier = value;
+                });
+              },
+            ),
+            buildTextField(
+              'User',
+              _userController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetUser = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Detail',
+              _detailController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetDetail = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Manufacturer No',
+              _manufacturerNoController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetManufacturersNum = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Parent Code',
+              _parentCodeController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.parentAssetCode = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Last Maintenance Date',
+              _lastMaintenanceDateController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.lastMaintenanceDate = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Purchase Date',
+              _purchaseDateController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.purchaseDate = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Location',
+              _locationController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetLocation = value;
+                });
+              },
+            ),
+            buildTextField(
+              'Type',
+              _typeController.text,
+              enabled: _isEditing,
+              onChanged: (value) {
+                setState(() {
+                  _assetData.assetType = value;
+                });
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget buildSearchList(
-    List<String> items,
-    String value,
-    String hint,
-    ValueChanged<String> onChanged,
-  ) {
+  Widget buildTextField(
+    String label,
+    String value, {
+    bool enabled = true,
+    ValueChanged<String>? onChanged,
+  }) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TypeAheadField(
-        textFieldConfiguration: TextFieldConfiguration(
-          decoration: InputDecoration(
-            labelText: hint,
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
-          controller: TextEditingController(text: value),
-        ),
-        suggestionsCallback: (pattern) {
-          return items
-              .where((item) => item.toLowerCase().contains(pattern.toLowerCase()))
-              .toList();
-        },
-        itemBuilder: (context, String itemData) {
-          return ListTile(
-            title: Text(itemData),
-          );
-        },
-        onSuggestionSelected: (String? selectedItem) {
-          onChanged(selectedItem!);
-        },
+          TextField(
+            controller: TextEditingController(text: value),
+            enabled: enabled,
+            onChanged: onChanged,
+            style: TextStyle(color: Colors.black),
+            keyboardType: TextInputType.multiline,
+            minLines: 1,
+            maxLines: 20,
+            decoration: InputDecoration(
+              // Customize the appearance of the text field if needed
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.grey[200],
+            ),
+          ),
+        ],
       ),
     );
   }
-}
-
-Widget buildTextField(String label, TextEditingController controller) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: TextField(
-      decoration: InputDecoration(
-        labelText: label,
-      ),
-      controller: controller,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-    ),
-  );
 }

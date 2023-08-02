@@ -6,10 +6,9 @@ import '../Others/FlutterModel.dart';
 import 'Edit.dart';
 
 class Details extends StatefulWidget {
-  final String assetTag;
-  final String description;
+  final String fixedAssetCode;
 
-  const Details({super.key, required this.assetTag, required this.description});
+  const Details({Key? key, required this.fixedAssetCode}) : super(key: key);
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -17,111 +16,132 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   late Future<AssetDetails> assetDetails;
-  AssetDetails? _assetData; // Declare the variable to hold assetData
+  AssetDetails? _assetData;
 
-void navigateToEditScreen() {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => Edit(
-        assetTag: _assetData!.assetTag,
-        description: _assetData!.description,
-
-       // sourcebranch: _assetData!.,
-
-        // Pass other asset details as needed
+  void navigateToEditScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Edit(
+          fixedAssetCode: widget.fixedAssetCode,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   @override
   void initState() {
     super.initState();
-    assetDetails = fetchAssetDetails(widget.assetTag, widget.description);
+    assetDetails = fetchAssetDetails(widget.fixedAssetCode); // Use fixedAssetCode
   }
 
-Future<AssetDetails> fetchAssetDetails(
-  String assetTag, String assetName) async {
-  String url;
-  
-  if (widget.description == "00") {
-    url = 'https://cittafixedassetphone-apim.azure-api.net/assetdetails?assetTag=$assetTag';
-  } else {
-    url = 'https://cittafixedassetphone-apim.azure-api.net/assetdetails?assetTag=$assetTag&assetName=$assetName';
-  }
-  
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    final jsonResponse = json.decode(response.body);
-    final assetData = AssetDetails.fromJson(jsonResponse[0]);
-    setState(() {
-      _assetData = assetData; // Assign the value to _assetData
-    });
-    return assetData;
-  } else {
-    throw Exception('Failed to load asset details');
-  }
-}
+  Future<AssetDetails> fetchAssetDetails(String fixedAssetCode) async {
+    String url =
+        'https://citta.azure-api.net/Adron/api/FAsset/assetdetails?assetTag=0';
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: const Text('Details'),
-      backgroundColor: Colors.red,
-      actions: [
-        IconButton(
-          onPressed: () {
-            navigateToEditScreen();
-          },
-          icon: const Icon(Icons.edit),
-        ),
-      ],
-    ),
-    body: FutureBuilder<AssetDetails>(
-      future: assetDetails,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (snapshot.hasData) {
-          final assetData = snapshot.data!;
-          return Padding(
-  padding: const EdgeInsets.all(16.0),
-  child: ListView.builder(
-    itemCount: assetData.toJson().length,
-    itemBuilder: (context, index) {
-      final field = assetData.toJson().entries.elementAt(index);
-      return Column(
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print('API Response for Asset Details: $jsonResponse');
+      final assetData = AssetDetails.fromJson(jsonResponse);
+      setState(() {
+        _assetData = assetData;
+      });
+      return assetData;
+    } else {
+          print ("this is the FAC: $fixedAssetCode");
+
+      throw Exception('Failed to load asset details');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Details'),
+        backgroundColor: Colors.red,
+        actions: [
+          IconButton(
+            onPressed: () {
+              navigateToEditScreen();
+            },
+            icon: const Icon(Icons.edit),
+          ),
+        ],
+      ),
+      body: FutureBuilder<AssetDetails>(
+        future: assetDetails,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData && _assetData != null) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView(
+                children: [
+                 buildTextField('Asset Tag', _assetData!.assetTag),
+                      buildTextField('Description', _assetData!.description),
+                      buildTextField(
+                          'Fixed Asset Code', _assetData!.fixedAssetCode),
+                      buildTextField('Manufacturer', _assetData!.manufacturer),
+                      buildTextField('Model', _assetData!.model),
+                      buildTextField('Specs', _assetData!.assetspecs),
+                      buildTextField('Supplier', _assetData!.supplier),
+                      buildTextField('User', _assetData!.assetUser),
+                      buildTextField('Detail', _assetData!.assetDetail),
+                      buildTextField(
+                          'Manufacturer No', _assetData!.assetManufacturersNum),
+                      buildTextField(
+                          'Parent Code', _assetData!.parentAssetCode),
+                      buildTextField('Last Maintenance Date',
+                          _assetData!.lastMaintenanceDate),
+                      buildTextField('Purchase Date', _assetData!.purchaseDate),
+                      buildTextField('Location', _assetData!.assetLocation),
+                      buildTextField('Type', _assetData!.assetType),
+                  // Add other fields using buildTextField as shown above
+                ],
+              ),
+            );
+          } else {
+            return const Text('No data available');
+          }
+        },
+      ),
+    );
+  }
+
+  Widget buildTextField(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
           TextField(
-  controller: TextEditingController(text: '${field.value}'),
-  enabled: false,
-   style: const TextStyle(color: Colors.black),
-   keyboardType: TextInputType.multiline,
-minLines: 1,
-maxLines: 20,
-  decoration: InputDecoration(
-    labelText: field.key,
-    // border: OutlineInputBorder(),
-    // filled: true,
-    // fillColor: Colors.grey[200],
-  ),
-),
+            controller: TextEditingController(text: value),
+            enabled: false,
+            style: TextStyle(color: Colors.black),
+            keyboardType: TextInputType.multiline,
+            minLines: 1,
+            maxLines: 20,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.grey[200],
+            ),
+          ),
         ],
-      );
-    },
-  ),
-);
-        } else {
-          return const Text('No data available');
-        }
-      },
-    ),
-    
-  );
-}
+      ),
+    );
+  }
 }
