@@ -61,6 +61,27 @@ class AssetDetails {
       required this.supplier,
       required this.model});
 
+ @override
+  String toString() {
+    return 'AssetDetails('
+        'assetTag: $assetTag, '
+        'description: $description, '
+        'fixedAssetCode: $fixedAssetCode, '
+        'manufacturer: $manufacturer, '
+        'model: $model, '
+        'assetspecs: $assetspecs, '
+        'supplier: $supplier, '
+        'assetUser: $assetUser, '
+        'assetDetail: $assetDetail, '
+        'assetManufacturersNum: $assetManufacturersNum, '
+        'parentAssetCode: $parentAssetCode, '
+        'lastMaintenanceDate: $lastMaintenanceDate, '
+        'purchaseDate: $purchaseDate, '
+        'assetLocation: $assetLocation, '
+        'assetType: $assetType'
+        ')';
+  }
+
   factory AssetDetails.fromJson(Map<String, dynamic> json) {
   return AssetDetails(
     assetTag: json['assetTag'] ?? 'Unknown',

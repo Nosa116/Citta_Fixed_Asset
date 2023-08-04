@@ -37,7 +37,7 @@ class _DetailsState extends State<Details> {
 
   Future<AssetDetails> fetchAssetDetails(String fixedAssetCode) async {
     String url =
-        'https://citta.azure-api.net/Adron/api/FAsset/assetdetails?assetTag=0';
+        'https://citta.azure-api.net/Adron/api/FAsset/assetdetails?FixedAssetCode=${widget.fixedAssetCode}';
 
     final response = await http.get(Uri.parse(url));
 
@@ -75,7 +75,7 @@ class _DetailsState extends State<Details> {
         future: assetDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return Center(child: const CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData && _assetData != null) {

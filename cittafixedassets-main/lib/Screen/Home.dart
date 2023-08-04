@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(builder: (context) => const Searchscreen()),
                   );
                 },
-                child: const Text('Search'),
+                child: const Text('Search for Asset'),
               ),
               const SizedBox(height: 5),
               ElevatedButton(
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   scanBarcode();
                 },
-                child: const Text('Scan'),
+                child: const Text('Scan barcode'),
               ),
             ],
           ),
