@@ -28,51 +28,40 @@ class _SearchscreenState extends State<Searchscreen> {
     super.initState();
   }
 
-  void fetchUsers() async {
+  void fetchUsers(String query) async {
     setState(() {
       isLoading = true;
     });
 
     print('Fetch Asset Called');
-    const url = 'https://citta.azure-api.net/Adron/api/FAsset/assetlist';
+    final url =
+        'https://citta.azure-api.net/Adron/api/FAsset/assetlist?FixedAssetCode=$query';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      //print('API Response: $data');
-
+       print('API Response: $data'); // Print the API response before converting it to a list
       setState(() {
-        asset = data.map((item) => Asset.fromJson(item)).toList();
-        print('Asset List: $asset');
-        filterUsers(_searchController.text); // Filter users after fetching
+        filteredAssets = data.map((item) => Asset.fromJson(item)).toList();
         isLoading = false;
       });
+      print('Result $response');
       print('Fetch Asset completed');
     } else {
       print('Error fetching asset list. Status code: ${response.statusCode}');
       setState(() {
         isLoading = false;
       });
-      // Handle the error here, show an error message, or retry the request.
     }
-  }
-
-  void filterUsers(String query) {
-    setState(() {
-      isSearchClicked = true;
-      filteredAssets = asset
-          .where((asset) =>
-              asset.fixedAssetCode.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    });
   }
 
   void _onSearchClicked() {
     setState(() {
       isSearchTapped = true;
     });
-    fetchUsers(); // Fetch users and filter based on the search query
+    final query = _searchController.text;
+    fetchUsers(query); // Fetch users and filter based on the search query
   }
 
   @override
@@ -122,44 +111,48 @@ class _SearchscreenState extends State<Searchscreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Visibility(
-            visible: !isSearchTapped, // Show the image if search is not tapped
-            child: SvgPicture.asset(
-              'Images/search1.svg',
-              height: 100,
-              width: 100,
-              color: Colors.black, // Customize the color of the SVG image
-            ),
-          ),
-          isLoading
-              ? Center(child: CircularProgressIndicator()) // Show the loading indicator if loading is in progress
-              : isSearchClicked
-                  ? Expanded(
-                      child: ListView.builder(
-                        itemCount: filteredAssets.length,
-                        itemBuilder: (context, index) {
-                          final asset = filteredAssets[index];
+          
+           isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : filteredAssets.isNotEmpty // Check if filteredAssets is not empty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: filteredAssets.length,
+                      itemBuilder: (context, index) {
+                        final asset = filteredAssets[index];
 
-                          return ListTile(
-                            title: Text(asset.fixedAssetCode),
-                            subtitle: Text(asset.description),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Details(
-                                    //assetTag: asset.assetTag,
-                                    fixedAssetCode: asset.fixedAssetCode,
-                                  ),
+                        return ListTile(
+                          title: Text(asset.fixedAssetCode),
+                          subtitle: Text(asset.description),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Details(
+                                  fixedAssetCode: asset.fixedAssetCode,
                                 ),
-                              );
-                            },
-                          );
-                        },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  )
+                : Visibility(
+                    // Show the image if search is not tapped or no results found
+                    visible: !isSearchTapped,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'Images/search1.svg',
+                        height: 100,
+                        width: 100,
+                        color: Colors.black,
                       ),
-                    )
-                  : Container(), // Empty container if search is not clicked yet
-        ],
+                    ),
+                  ),
+      ],
       ),
     );
   }

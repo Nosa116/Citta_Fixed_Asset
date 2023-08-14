@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../Others/FlutterModel.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart'; // Import the typeahead package
+
+
 
 class Edit extends StatefulWidget {
   final String fixedAssetCode;
@@ -54,6 +57,8 @@ class _EditState extends State<Edit> {
   TextEditingController _locationController = TextEditingController();
   TextEditingController _typeController = TextEditingController();
 
+
+
 // Separate variables for each field to hold the edited values
   String _editedAssetTag = '';
   String _editedManufacturer = '';
@@ -79,29 +84,7 @@ class _EditState extends State<Edit> {
   void initState() {
     super.initState();
     _editedDescription = ''; // Initialize the edited description
-
-    _fetchAssetDetails();
-    _fetchAssetStaffs().then((staffs) {
-      setState(() {
-        _assetStaffs = staffs;
-
-        Widget userDropdownWidget = buildDropdown(staffs, _assetData.assetUser);
-      });
-    }); // Fetch asset staffs when the screen is initialized
-    _fetchSuppliers().then((suppliers) {
-      setState(() {
-        _supplierList = suppliers;
-        _editedSupplier =
-            _assetData.supplier; // Set the initial value of _editedSupplier
-      });
-    });
-    _fetchLocations().then((locations) {
-      setState(() {
-        _locationsList = locations;
-        _editedLocation = _assetData
-            .assetLocation; // Set the initial value of _editedLocation
-      });
-    });
+    _fetchAssetDetails();   
   }
 
   String formatDate(String inputDate) {
@@ -116,63 +99,83 @@ class _EditState extends State<Edit> {
     return inputDate;
   }
 
-  Future<List<String>> _fetchLocations() async {
-    try {
-      String url =
-          'https://example.com/api/locations'; // Replace with the actual URL to fetch the list of locations
-      final response = await http.get(Uri.parse(url));
 
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        List<String> locations = List<String>.from(jsonResponse);
-        return locations;
-      } else {
-        throw Exception('Failed to fetch locations');
-      }
-    } catch (e) {
-      print('Error fetching locations: $e');
-      return []; // Return an empty list in case of error
+Future<List<String>> _fetchLocationsByQuery(String query) async {
+  try {
+    String url = 'https://citta.azure-api.net/Adron/api/FAsset/assetlocation?location=$query';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body) as List;
+      List<String> locations = jsonResponse.map((item) {
+        String description = item['description']?.toString() ?? '';
+        String locationCode = item['locationCode']?.toString() ?? '';
+        return '$description - $locationCode';
+      }).toList();
+      return locations;
+    } else {
+      throw Exception('Failed to fetch locations');
     }
+  } catch (e) {
+    print('Error fetching locations: $e');
+    return []; // Return an empty list in case of an error
   }
+}
 
-  Future<List<String>> _fetchAssetStaffs() async {
-    try {
-      String url =
-          'https://citta.azure-api.net/Adron/api/FAsset/assetstaffs/staffs';
-      final response = await http.get(Uri.parse(url));
 
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        // Assuming the API response is a list of staff names (strings)
-        List<String> staffs = List<String>.from(jsonResponse);
-        return staffs;
-      } else {
-        throw Exception('Failed to fetch asset staffs');
-      }
-    } catch (e) {
-      print('Error fetching asset staffs: $e');
-      return []; // Return an empty list in case of error
+
+ Future<List<String>> _fetchAssetStaffsByQuery(String query) async {
+  try {
+    String url =
+        'https://citta.azure-api.net/Adron/api/FAsset/assetstaffs?staff=$query';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      print('success');
+        print('Response body: ${response.body}');
+      final jsonResponse = json.decode(response.body);
+      List<String> staffs = (jsonResponse as List).map((staff) {
+        // Use the 'staffName' field instead of 'name'
+        return staff['staffName']?.toString() ?? '';
+      }).toList();
+      return staffs;
+    } else {
+      print('API request failed with status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      throw Exception('Failed to fetch asset staffs');
     }
+  } catch (e) {
+    print('Error fetching asset staffs: $e');
+    return []; // Return an empty list in case of error
   }
+}
 
-  Future<List<String>> _fetchSuppliers() async {
-    try {
-      String url =
-          'URL_TO_FETCH_SUPPLIERS'; // Replace with the actual URL to fetch the list of suppliers
-      final response = await http.get(Uri.parse(url));
+  
 
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-        List<String> suppliers = List<String>.from(jsonResponse);
-        return suppliers;
-      } else {
-        throw Exception('Failed to fetch suppliers');
-      }
-    } catch (e) {
-      print('Error fetching suppliers: $e');
-      return []; // Return an empty list in case of error
+  Future<List<String>> _fetchSuppliersByQuery(String query) async {
+  try {
+    String url =
+        'https://citta.azure-api.net/Adron/api/FAsset/assetsupplier?supplier=$query';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      List<String> suppliers = (jsonResponse as List).map((supplier) {
+        // Use the 'description' field instead of 'staffName'
+        return supplier['description']?.toString() ?? '';
+      }).toList();
+      return suppliers;
+    } else {
+      print('API request failed with status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      throw Exception('Failed to fetch suppliers');
     }
+  } catch (e) {
+    print('Error fetching suppliers: $e');
+    return []; // Return an empty list in case of error
   }
+}
+
 
   Future<void> _scanAssetTag() async {
     try {
@@ -212,6 +215,9 @@ class _EditState extends State<Edit> {
         setState(() {
           _assetData = assetData;
           _descriptionController.text = _assetData.description;
+
+          _selectedUser =
+              _assetData.assetUser; // Set the selected user from assetData
 
           _editedDescription =
               _assetData.description; // Initialize the edited description
@@ -371,7 +377,9 @@ class _EditState extends State<Edit> {
                   child: Text(
                     'Submit',
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w800, fontSize: 16),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16),
                   ),
                 ),
               ),
@@ -395,6 +403,7 @@ class _EditState extends State<Edit> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+        
         child: ListView(
           children: [
             buildTextField(
@@ -459,7 +468,8 @@ class _EditState extends State<Edit> {
               // Set the desired number of lines for the "Specs" field
             ),
             buildDropdownSupplier(_supplierList, _editedSupplier),
-            buildDropdown(_assetStaffs, _editedUser),
+             buildTypeaheadDropdown(_assetStaffs, _selectedUser), // Use the new method for the "Users" field
+
             buildTextField(
               'Asset Detail',
               _detailController.text,
@@ -512,7 +522,8 @@ class _EditState extends State<Edit> {
                 });
               },
             ),
-            buildDropdownLocation(_locationsList, _editedLocation),
+            buildTypeaheadDropdownLocation(_locationsList, _editedLocation), // Use the new method for the "Location" field
+
             buildTextField(
               'Type',
               _typeController.text,
@@ -529,119 +540,216 @@ class _EditState extends State<Edit> {
     );
   }
 
-  Widget buildDropdownSupplier(
-      List<String> supplierList, String selectedSupplier) {
+  Widget buildTypeaheadDropdown(List<String> userList, String selectedUser) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Supplier',
+            'User',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
-          DropdownButtonFormField<String>(
-            value:
-                selectedSupplier, // Use selectedSupplier to show the initial value
-            onChanged: (newValue) {
+          TypeAheadFormField<String>(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: _userController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[200],
+              ),
+            ),
+            suggestionsCallback: (String pattern) async {
+              // Call the API to fetch the suggestions based on the input pattern
+              return _fetchAssetStaffsByQuery(pattern);
+            },
+            itemBuilder: (BuildContext context, String suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            onSuggestionSelected: (String suggestion) {
+              // Set the selected user when a suggestion is selected
               setState(() {
-                _editedSupplier = newValue!;
+                _selectedUser = suggestion;
+                _userController.text = suggestion; // Update the text field with the selected user
               });
             },
-            items: supplierList.map((supplier) {
-              return DropdownMenuItem<String>(
-                value: supplier,
-                child: Text(supplier),
-              );
-            }).toList(),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.grey[200],
-            ),
+            noItemsFoundBuilder: (BuildContext context) {
+              return SizedBox.shrink(); // Return an empty container if no suggestions are found
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget buildDropdownLocation(
-      List<String> locationsList, String selectedLocation) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Location',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          DropdownButtonFormField<String>(
-            value: selectedLocation,
-            onChanged: (newValue) {
-              setState(() {
-                _editedLocation = newValue!;
-              });
-            },
-            items: locationsList.map((location) {
-              return DropdownMenuItem<String>(
-                value: location,
-                child: Text(location),
-              );
-            }).toList(),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.grey[200],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget buildDropdown(List<String> userList, String selectedUser) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'User', // Replace 'User' with the desired label for the dropdown
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+  Widget buildDropdownSupplier(List<String> supplierList, String selectedSupplier) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Supplier',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-          DropdownButtonFormField<String>(
-            value: selectedUser,
-            onChanged: (newValue) {
-              setState(() {
-                _editedUser = newValue!;
-              });
-            },
-            items: userList.map((user) {
-              return DropdownMenuItem<String>(
-                value: user,
-                child: Text(user),
-              );
-            }).toList(),
+        ),
+        TypeAheadFormField<String>(
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: _supplierController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               filled: true,
               fillColor: Colors.grey[200],
             ),
           ),
-        ],
-      ),
-    );
-  }
+          suggestionsCallback: (String pattern) async {
+            // Call the API to fetch the suggestions based on the input pattern
+            return _fetchSuppliersByQuery(pattern);
+          },
+          itemBuilder: (BuildContext context, String suggestion) {
+            return ListTile(
+              title: Text(suggestion),
+            );
+          },
+          onSuggestionSelected: (String suggestion) {
+            // Set the selected supplier when a suggestion is selected
+            setState(() {
+              _editedSupplier = suggestion;
+              _supplierController.text =
+                  suggestion; // Update the text field with the selected supplier
+            });
+          },
+          noItemsFoundBuilder: (BuildContext context) {
+            return SizedBox.shrink(); // Return an empty container if no suggestions are found
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+Widget buildTypeaheadDropdownLocation(
+  List<String> locationsList,
+  String selectedLocation,
+) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Location',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        TypeAheadFormField<String>(
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: _locationController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.grey[200],
+            ),
+          ),
+          suggestionsCallback: (String pattern) async {
+            // Call the API to fetch the suggestions based on the input pattern
+            return _fetchLocationsByQuery(pattern);
+          },
+          itemBuilder: (BuildContext context, String suggestion) {
+            return ListTile(
+              title: Text(suggestion),
+            );
+          },
+          onSuggestionSelected: (String suggestion) {
+            // Set the selected location when a suggestion is selected
+            setState(() {
+              _editedLocation = suggestion;
+              _locationController.text = suggestion; // Update the text field with the selected location
+            });
+          },
+          noItemsFoundBuilder: (BuildContext context) {
+            return SizedBox.shrink(); // Return an empty container if no suggestions are found
+          },
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+  
+
+Widget buildDropdown(List<String> userList, String selectedUser) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'User',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        Autocomplete<String>(
+          optionsBuilder: (TextEditingValue textEditingValue) {
+            if (textEditingValue.text.isEmpty) {
+              return userList;
+            } else {
+              return _fetchAssetStaffsByQuery(textEditingValue.text);
+            }
+          },
+          onSelected: (String newValue) {
+            setState(() {
+              _selectedUser = newValue;
+            });
+          },
+          displayStringForOption: (String option) => option,
+          fieldViewBuilder: (BuildContext context,
+              TextEditingController textEditingController,
+              FocusNode focusNode,
+              VoidCallback onFieldSubmitted) {
+            return TextField(
+              controller: textEditingController,
+              onChanged: (value) {
+                // We do not need to do anything here since onChanged of TextField will handle it
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[200],
+              ),
+            );
+          },
+          optionsMaxHeight: 200, // Set the maximum height of the dropdown
+        ),
+      ],
+    ),
+  );
+}
+
+
+
+
+
+
+
+
+
 
   Widget buildTextField(
     String label,
