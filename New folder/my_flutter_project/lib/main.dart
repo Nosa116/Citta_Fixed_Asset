@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomeScreen(),
+     
     );
   }
 }
@@ -19,38 +20,32 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Navigation Bar App'),
-        backgroundColor: Colors.blue, // Set the app bar's background color
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/Logo.png', // Replace with your image asset path
-              width: 200, // Adjust the width as needed
-              height: 200, // Adjust the height as needed
+              'Assets/Logo.png',
+              width: 200,
+              height: 200,
             ),
           ],
         ),
       ),
-      backgroundColor: Colors.blue, // Set the background color of the body
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        selectedItemColor: Colors.blue, // Set the selected item's color
+      backgroundColor: Colors.blue,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to the LoginScreen when the button is pressed
+          Navigator.of(context).pushNamed('/login');
+        },
+        child: Icon(Icons.arrow_forward),
+        backgroundColor: Colors.green, // Customize the button's background color
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Position the button at the bottom right corner
     );
   }
 }
+
+
