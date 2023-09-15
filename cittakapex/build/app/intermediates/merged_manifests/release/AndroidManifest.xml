@@ -19,7 +19,7 @@
         android:name="android.app.Application"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/ic_launcher"
-        android:label="Cittakapex"
+        android:label="Cittakpex"
         android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
         <activity

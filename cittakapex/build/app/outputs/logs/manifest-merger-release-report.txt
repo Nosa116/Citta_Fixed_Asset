@@ -30,7 +30,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\le
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.6.0] C:\Users\lenovo\.gradle\caches\transforms-3\7e9df2ac2213a6bd3cef0f2f27870d79\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from C:\Users\lenovo\Desktop\cittakapex\android\app\src\main\AndroidManifest.xml:4:9-35
+		ADDED from C:\Users\lenovo\Desktop\cittakapex\android\app\src\main\AndroidManifest.xml:4:9-34
 	android:largeHeap
 		ADDED from [:flutter_barcode_scanner] C:\Users\lenovo\Desktop\cittakapex\build\flutter_barcode_scanner\intermediates\merged_manifest\release\AndroidManifest.xml:16:9-33
 	android:icon

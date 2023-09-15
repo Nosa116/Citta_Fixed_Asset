@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:cittakapex/Screen/Home.dart';
+import 'package:cittakpex/Screen/Home.dart';
+import 'package:flutter/services.dart'; // Import this for rootBundle
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -81,7 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: const Color(0xFFFFFAFA),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
-          child: Align(
+          child: 
+          
+          Column( // Wrap with a Column widget
+        children: [
+          
+
+          Align(
             alignment: Alignment.centerLeft,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,15 +103,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(width: 150),
-                    Text(
-                      'Adron',
-                      style: TextStyle(
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
+                   // SizedBox(width: 150),
+                    // Text(
+                    //   'Adron',
+                    //   style: TextStyle(
+                    //     fontSize: 34,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colors.green,
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -230,9 +237,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+          SizedBox(height: 40), // Add some space between the image and other content
+          
+          Center(
+            child: Image.asset(
+              'Images/adronLogo.png', // Adjust the path as needed
+              width: 100, // Adjust the width as needed
+              height: 100, // Adjust the height as needed
+              // You can add other properties like alignment, color, etc.
+            ),
+          ),
+          SizedBox(height: 2), // Add some space between the image and other content
               ],
             ),
           ),
-        ));
+        ])));
   }
 }

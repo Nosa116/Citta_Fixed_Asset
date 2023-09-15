@@ -32,8 +32,8 @@
 20-->[androidx.core:core:1.6.0] C:\Users\lenovo\.gradle\caches\transforms-3\7e9df2ac2213a6bd3cef0f2f27870d79\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
 21        android:icon="@mipmap/ic_launcher"
 21-->C:\Users\lenovo\Desktop\cittakapex\android\app\src\main\AndroidManifest.xml:6:9-43
-22        android:label="Cittakapex"
-22-->C:\Users\lenovo\Desktop\cittakapex\android\app\src\main\AndroidManifest.xml:4:9-35
+22        android:label="Cittakpex"
+22-->C:\Users\lenovo\Desktop\cittakapex\android\app\src\main\AndroidManifest.xml:4:9-34
 23        android:largeHeap="true"
 23-->[:flutter_barcode_scanner] C:\Users\lenovo\Desktop\cittakapex\build\flutter_barcode_scanner\intermediates\merged_manifest\release\AndroidManifest.xml:16:9-33
 24        android:theme="@style/Theme.AppCompat.NoActionBar" >

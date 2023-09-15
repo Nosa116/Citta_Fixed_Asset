@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
+import 'package:cittakpex/Screen/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -38,7 +41,7 @@ class _EditState extends State<Edit> {
     assetTypeName: '',
   );
   bool _isEditing = false;
-  //bool _isRequestingApproval = false;
+  bool _isFetchingDataError = false;
   bool _hasChanges = false;
   bool isEditedAndSaved = false;
   final _formKey = GlobalKey<FormState>();
@@ -54,34 +57,42 @@ class _EditState extends State<Edit> {
   final TextEditingController _supplierController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _detailController = TextEditingController();
-  final TextEditingController _manufacturerNoController = TextEditingController();
+  final TextEditingController _manufacturerNoController =
+      TextEditingController();
   final TextEditingController _parentCodeController = TextEditingController();
   final TextEditingController _lastMaintenanceDateController =
       TextEditingController();
   final TextEditingController _purchaseDateController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
+  final TextEditingController _transtypeController = TextEditingController();
 
 // Separate variables for each field to hold the edited values
-  final String _editedAssetTag = '';
+  String _editedAssetTag = '';
   String _editedManufacturer = '';
   final String _editedModel = '';
   String _editedSpecs = '';
   String _editedSupplier = '';
   String _editedSupplierName = '';
-  final String _editedUser = '';
+  String _editedUser = '';
+  String _editedBranch = '';
   String _editedDetail = '';
   final String _editedManufacturerNo = '';
   String _editedParentCode = '';
-  final String _editedLastMaintenanceDate = '';
+  String _editedLastMaintenanceDate = '';
   String _editedPurchaseDate = '';
   String _editedLocation = '';
   String _editedLocationName = '';
   final String _editedType = '';
+  String _editedtranstype='';
+  String _generatedReference = '';
 
   String _selectedUser = ''; // Variable to store the selected user
+  String _selectedBranch = ''; // Variable to store the selected user
+  String _editedtranstypename = '';
 
   final List<String> _assetStaffs = [];
+  final List<String> _branchlist = [];
   final List<String> _supplierList = [];
   final List<String> _locationsList = [];
 
@@ -93,6 +104,19 @@ class _EditState extends State<Edit> {
 
     // Set _editedSupplierName to the initial supplier name from API response
   }
+
+  void generateReference() {
+    // Adjust the format and separator as needed
+    _generatedReference =
+        '${_assetData.fixedAssetCode} -- ${_assetData.lastMaintenanceDate}';
+  }
+
+final List<String> assetOptions = [
+  'Asset Verification - 180',
+  'Change of Asset Location - 124',
+  'Asset adoption - 125',
+];
+
 
   Future<List<String>> _fetchLocationsByQuery(String query) async {
     try {
@@ -107,12 +131,15 @@ class _EditState extends State<Edit> {
           String locationCode = item['locationCode']?.toString() ?? '';
           return '$description - $locationCode';
         }).toList();
+        _isFetchingDataError = false; // Reset the error flag
         return locations;
       } else {
         throw Exception('Failed to fetch locations');
       }
     } catch (e) {
       print('Error fetching locations: $e');
+      _isFetchingDataError = true; // Set the error flag
+
       return []; // Return an empty list in case of an error
     }
   }
@@ -126,11 +153,13 @@ class _EditState extends State<Edit> {
       if (response.statusCode == 200) {
         print('success');
         print('Response body: ${response.body}');
-        final jsonResponse = json.decode(response.body);
-        List<String> staffs = (jsonResponse as List).map((staff) {
-          // Use the 'staffName' field instead of 'name'
-          return staff['staffName']?.toString() ?? '';
+        final jsonResponse = json.decode(response.body) as List<dynamic>;
+        List<String> staffs = jsonResponse.map((item) {
+          String staffNumber = item['staffNumber']?.toString() ?? '';
+          String staffName = item['staffName']?.toString() ?? '';
+          return '$staffName - $staffNumber';
         }).toList();
+        _isFetchingDataError = false; // Reset the error flag
         return staffs;
       } else {
         print('API request failed with status code: ${response.statusCode}');
@@ -139,6 +168,36 @@ class _EditState extends State<Edit> {
       }
     } catch (e) {
       print('Error fetching asset staffs: $e');
+      _isFetchingDataError = true; // Set the error flag
+      return []; // Return an empty list in case of error
+    }
+  }
+
+  Future<List<String>> _fetchBranchByQuery(String query) async {
+    try {
+      String url =
+          'https://citta.azure-api.net/Adron/api/FAsset/assetbranches?branchcode=a';
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        print('success');
+        print('Response body: ${response.body}');
+        final jsonResponse = json.decode(response.body) as List<dynamic>;
+        List<String> branches= jsonResponse.map((item) {
+          String BranchNumber = item['parameterType']?.toString() ?? '';
+          String BranchName = item['parameterName']?.toString() ?? '';
+          return '$BranchName - $BranchNumber';
+        }).toList();
+        _isFetchingDataError = false; // Reset the error flag
+        return branches;
+      } else {
+        print('API request failed with status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        throw Exception('Failed to branches');
+      }
+    } catch (e) {
+      print('Error fetching asset staffs: $e');
+      _isFetchingDataError = true; // Set the error flag
       return []; // Return an empty list in case of error
     }
   }
@@ -227,8 +286,11 @@ class _EditState extends State<Edit> {
           _lastMaintenanceDateController.text = _assetData.lastMaintenanceDate;
           _purchaseDateController.text = _assetData.purchaseDate;
           _locationController.text = _assetData.assetLocationName;
+          
           // _typeController.text = _assetData.assetType;
           _typeController.text = _assetData.assetTypeName;
+
+          generateReference();
         });
       } else {
         print("FAC is ${widget.fixedAssetCode}");
@@ -242,34 +304,16 @@ class _EditState extends State<Edit> {
   Future<void> _updateAssetDetails() async {
     try {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data'),
-         duration: Duration(milliseconds: 700 ), // Specify the duration in seconds
+        const SnackBar(
+          content: Text('Processing Data'),
+          duration:
+              Duration(milliseconds: 700), // Specify the duration in seconds
         ),
-        
       );
 
-      // if (!_formKey.currentState!.validate()) {
-      //   return; // Return if form validation fails
-      // }
-      // Check if any required field is empty
-      // if (_editedDescription.isEmpty ||
-      //     _manufacturerController.text.isEmpty ||
-      //     _modelController.text.isEmpty ||
-      //     _supplierController.text.isEmpty ||
-      //     _userController.text.isEmpty ||
-      //     _detailController.text.isEmpty ||
-      //     _manufacturerNoController.text.isEmpty ||
-      //     _parentCodeController.text.isEmpty ||
-      //     _lastMaintenanceDateController.text.isEmpty ||
-      //     _purchaseDateController.text.isEmpty ||
-      //     _locationController.text.isEmpty ||
-      //     _typeController.text.isEmpty) {
-      //   print('Please fill all required fields.');
-      //   return;
-      // }
-
+      
       // Prepare the updated data
-      AssetDetails updatedData = AssetDetails(
+      AssetDetails pdata = AssetDetails(
         fixedAssetCode: _assetData.fixedAssetCode,
         assetTag:
             _editedAssetTag.isNotEmpty ? _editedAssetTag : _assetData.assetTag,
@@ -313,7 +357,37 @@ class _EditState extends State<Edit> {
             : _locationController.text,
         assetTypeName:
             _editedType.isNotEmpty ? _editedType : _typeController.text,
+
+   
+               
       );
+
+      print('Updated AssetDetails: $pdata');
+
+      Map<String, dynamic> updatedData = {
+        "fixedAssetCode": _assetData.fixedAssetCode,
+        "assetTag": pdata
+            .assetTag, //_editedAssetTag.isNotEmpty ? _editedAssetTag : _assetData.assetTag,
+        "description": _editedDescription,
+        "manufacturerTrans": pdata.manufacturer,
+        "modelTrans": _editedModel.isNotEmpty
+            ? _editedModel
+            : _assetData
+                .model, //  model: _editedModel.isNotEmpty ? _editedModel : _assetData.model,
+        "specsTrans":
+            _editedSpecs.isNotEmpty ? _editedSpecs : _specsController.text,
+
+        "sourceUser": pdata.assetUser,
+        "manual_reference": _generatedReference,
+
+        "maintenance_date": pdata.lastMaintenanceDate,
+        "sourceBranch": pdata.assetDetail,
+        "targetBranch": pdata.parentAssetCode,
+
+        "targetLocation": _editedLocation.isNotEmpty ? _editedLocation : _locationController.text,
+
+        "transfer_type": _editedtranstype.isNotEmpty ? _editedtranstype : _transtypeController.text,    
+      };
 
       // Print the updated data before sending it to the API
       print('Updated AssetDetails: $updatedData');
@@ -323,7 +397,7 @@ class _EditState extends State<Edit> {
           'https://citta.azure-api.net/Adron/api/FAsset/updateassets';
       final response = await http.post(
         Uri.parse(updateUrl),
-        body: json.encode(updatedData.toJson()),
+        body: json.encode(updatedData),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -342,10 +416,24 @@ class _EditState extends State<Edit> {
           duration: Duration(seconds: 3), // Set the duration for the SnackBar
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  HomeScreen()), // Replace with your home screen widget
+        );
       } else {
+        print(updatedData);
         print(
             'Failed to update asset details. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');
+        const snackBar = SnackBar(
+          content: Text('Failed to submit '),
+          duration: Duration(seconds: 3), // Set the duration for the SnackBar
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
         throw Exception('Failed to update asset details');
       }
     } catch (e) {
@@ -373,16 +461,20 @@ class _EditState extends State<Edit> {
                 //  Visibility(visible: _hasChanges, ),
                 child: ElevatedButton(
                   onPressed: () {
+                     if (_formKey.currentState!.validate()) {
+              // The form is valid, submit the data
+              _updateAssetDetails();
+            }
                     if (_hasChanges) {
                       // Disable the button if already clicked
                       return;
                     } else {
-                      print('not done');
+                      //print('not done');
                       setState(() {
                         _hasChanges = false;
                         _isEditing = false;
                       });
-                      _updateAssetDetails();
+                     // _updateAssetDetails();
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -397,7 +489,7 @@ class _EditState extends State<Edit> {
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w800,
-                        fontSize: 16),
+                        fontSize: 10),
                   ),
                 ),
               ),
@@ -408,13 +500,6 @@ class _EditState extends State<Edit> {
             ),
             child: IconButton(
               onPressed: () {
-                //  if (_formKey.currentState!.validate()) {
-                //       // If the form is valid, display a snackbar. In the real world,
-                //       // you'd often call a server or save the information in a database.
-                //       ScaffoldMessenger.of(context).showSnackBar(
-                //         const SnackBar(content: Text('Processing Data')),
-                //       );
-                //     }
                 setState(() {
                   _isEditing = !_isEditing;
                   _hasChanges =
@@ -432,6 +517,7 @@ class _EditState extends State<Edit> {
           key: _formKey,
           child: ListView(
             children: [
+              buildTypeaheadDropdowntransType(assetOptions, _editedtranstypename), // Use the new method for the "Location" field
               buildTextField(
                 'Barcode',
                 _editedAssetTag.isNotEmpty
@@ -488,13 +574,11 @@ class _EditState extends State<Edit> {
                 },
                 // Set the desired number of lines for the "Specs" field
               ),
-              buildTypeaheadDropdownSupplier(
-                  _supplierList, _editedSupplierName),
+              buildTypeaheadDropdownSupplier(_supplierList, _editedSupplierName),
 
-              buildTypeaheadDropdown(_assetStaffs,
-                  _selectedUser), // Use the new method for the "Users" field
-              buildTypeaheadDropdownLocation(_locationsList,
-                  _editedLocation), // Use the new method for the "Location" field
+              buildTypeaheadDropdown(_assetStaffs,_selectedUser), // Use the new method for the "Users" field
+              buildTypeaheadDropdownBranch(_branchlist,_selectedBranch), // Use the new method for the "Users" field
+              buildTypeaheadDropdownLocation(_locationsList, _editedLocation), // Use the new method for the "Location" field
               buildTextField(
                 'Asset Detail',
                 _editedDetail.isNotEmpty
@@ -508,61 +592,47 @@ class _EditState extends State<Edit> {
                 },
               ),
 
-              buildTextField(
-                'Manufacturer No',
-                _manufacturerNoController.text,
-                enabled: _isEditing,
-                onChanged: (value) {
-                  setState(() {
-                    _assetData.assetManufacturersNum = value;
-                  });
-                },
-              ),
-              buildTextField(
-                'Parent Code',
-                _editedParentCode.isNotEmpty
-                    ? _editedParentCode
-                    : _assetData.parentAssetCode,
-                enabled: _isEditing,
-                onChanged: (value) {
-                  setState(() {
-                    _editedParentCode = value;
-                  });
-                },
-              ),
+              // buildTextField(
+              //   'Manufacturer No',
+              //   _manufacturerNoController.text,
+              //   enabled: _isEditing,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _assetData.assetManufacturersNum = value;
+              //     });
+              //   },
+              // ),
+              // buildTextField(
+              //   'Parent Code',
+              //   _editedParentCode.isNotEmpty
+              //       ? _editedParentCode
+              //       : _assetData.parentAssetCode,
+              //   enabled: _isEditing,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _editedParentCode = value;
+              //     });
+              //   },
+              // ),
+              buildTextField('Reference',_generatedReference,enabled: false,),
 
               buildTextField(
                 'Last Maintenance Date',
                 _lastMaintenanceDateController.text,
+                hintText: 'DD/MM/YYYY',
                 enabled: _isEditing,
                 onChanged: (value) {
                   setState(() {
                     _assetData.lastMaintenanceDate = value;
+                    _lastMaintenanceDateController.text = value;
+                    generateReference();
                   });
                 },
               ),
-              buildTextField(
-                'Purchase Date',
-                _editedPurchaseDate.isNotEmpty
-                    ? _editedPurchaseDate
-                    : formatDate(_assetData.purchaseDate),
-                enabled: _isEditing,
-                onChanged: (value) {
-                  setState(() {
-                    _editedPurchaseDate = value;
-                  });
-                },
-              ),
+            
 
-              buildTextField(
-                'Fixed Asset Code',
-                _assetData.fixedAssetCode,
-                enabled: false,
-              ),
-              buildTextField(
-                'Type',
-                _typeController.text,
-                enabled: false,
+              buildTextField( 'Fixed Asset Code', _assetData.fixedAssetCode, enabled: false,),
+              buildTextField('Type', _typeController.text, enabled: false,
                 onChanged: (value) {
                   setState(() {
                     _assetData.assetTypeName = value;
@@ -580,54 +650,76 @@ class _EditState extends State<Edit> {
     TextEditingController userTextController =
         TextEditingController(text: _selectedUser);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Asset User',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          TypeAheadFormField<String>(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: userTextController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.grey[200],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Asset User',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
-              enabled:
-                  _isEditing, // Set the enabled property based on edit mode
             ),
-            // validator: (value) {
-            //   if (!_assetStaffs.contains(value) || value!.isEmpty ) {
-            //     return 'Please select a valid asset user';
-            //   }
-            //   return null;
-            // },
-            suggestionsCallback: (String pattern) async {
-              return _fetchAssetStaffsByQuery(pattern);
-            },
-            itemBuilder: (BuildContext context, String suggestion) {
-              return ListTile(
-                title: Text(suggestion),
-              );
-            },
-            onSuggestionSelected: (String suggestion) {
-              setState(() {
-                _selectedUser = suggestion;
-                userTextController.text = suggestion;
-              });
-            },
-            noItemsFoundBuilder: (BuildContext context) {
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
+            TypeAheadFormField<String>(
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: userTextController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                ),
+                enabled:
+                    _isEditing, // Set the enabled property based on edit mode
+              ),
+              suggestionsCallback: (String pattern) async {
+                List<String> staffs = await _fetchAssetStaffsByQuery(pattern);
+                return staffs;
+              },
+              itemBuilder: (BuildContext context, String suggestion) {
+                final List<String> parts =
+                    suggestion.split(' - '); // Split name and number
+                final String staffName =
+                    parts[0]; // Staff name is the first part
+                // Staff number is the second part, you can ignore it in the UI
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _editedUser =
+                          parts[1]; // Update the selected staff number
+                      _selectedUser =
+                          staffName; // Update the selected staff name
+                      userTextController.text =
+                          staffName; // Update the text controller's value
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(staffName), // Display only the staff name
+                  ),
+                );
+              },
+              onSuggestionSelected: (String suggestion) {
+                setState(() {
+                  _selectedUser = suggestion;
+                  userTextController.text = suggestion;
+                  _editedUser = suggestion; // Update _editedUser
+                });
+              },
+              noItemsFoundBuilder: (BuildContext context) {
+                if (_isFetchingDataError) {
+                  return const Text(
+                    'Error fetching data, please try again.',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -661,7 +753,7 @@ class _EditState extends State<Edit> {
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
-                enabled: _isEditing, // Enable the text field only when editing
+                enabled: false, // Enable the text field only when editing
               ),
               suggestionsCallback: (String pattern) async {
                 // Call the API to fetch the suggestions based on the input pattern
@@ -701,58 +793,221 @@ class _EditState extends State<Edit> {
     TextEditingController locationTextController =
         TextEditingController(text: _editedLocationName);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Location',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          TypeAheadFormField<String>(
-            textFieldConfiguration: TextFieldConfiguration(
-              controller: locationTextController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.grey[200],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Location',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
-              enabled: _isEditing, // Enable the text field only when editing
             ),
-            suggestionsCallback: (String pattern) async {
-              // Call the API to fetch the suggestions based on the input pattern
-              return _fetchLocationsByQuery(pattern);
-            },
-            itemBuilder: (BuildContext context, String suggestion) {
-              return GestureDetector(
-                onTap: () {
-                  // Set the selected location when a suggestion is tapped
-                  setState(() {
-                    _editedLocation = suggestion;
-                    _editedLocationName =
-                        suggestion; // Update the selected location name
-                    locationTextController.text =
-                        suggestion; // Update the text controller's value
-                  });
-                },
-                child: ListTile(
-                  title: Text(suggestion),
+            TypeAheadFormField<String>(
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: locationTextController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey[200],
                 ),
-              );
-            },
-            onSuggestionSelected: (String suggestion) {
-              // No action needed here
-            },
-            noItemsFoundBuilder: (BuildContext context) {
-              return const SizedBox
-                  .shrink(); // Return an empty container if no suggestions are found
-            },
+                enabled: _isEditing, // Enable the text field only when editing
+              ),
+              suggestionsCallback: (String pattern) async {
+                // Call the API to fetch the suggestions based on the input pattern
+                return _fetchLocationsByQuery(pattern);
+              },
+              itemBuilder: (BuildContext context, String suggestion) {
+                final List<String> parts =
+                    suggestion.split(' - '); // Split description and code
+                final String description =
+                    parts[0]; // Description is the first part
+                // Location code is the second part, you can ignore it in the UI
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _editedLocation =
+                          parts[1]; // Update the selected location code
+                      _editedLocationName =
+                          description; // Update the selected location name
+                      locationTextController.text =
+                          description; // Update the text controller's value
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(description), // Display only the description
+                  ),
+                );
+              },
+              onSuggestionSelected: (String suggestion) {
+                // No action needed here
+              },
+              noItemsFoundBuilder: (BuildContext context) {
+                if (_isFetchingDataError) {
+                  return const Text(
+                    'Error fetching data, please try again.',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+final GlobalKey<FormState> _formmKey = GlobalKey<FormState>();
+
+Widget buildTypeaheadDropdowntransType(List<String> suggestions, String selectedValue) {
+  TextEditingController _transtypeController = TextEditingController(text: selectedValue);
+
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        'Select Transaction Type',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+      TypeAheadFormField<String>(
+        textFieldConfiguration: TextFieldConfiguration(
+          controller: _transtypeController,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.grey[200],
           ),
-        ],
+          enabled:true,
+        ),
+        suggestionsCallback: (String pattern) async {
+          return assetOptions
+              .where((option) =>
+                  option.toLowerCase().contains(pattern.toLowerCase()))
+              .toList();
+        },
+        itemBuilder: (BuildContext context, String suggestion) {
+          final List<String> parts = suggestion.split(' - ');
+          final String description = parts[0];
+          final String code = parts[1]; // Extract the code part
+
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _editedtranstype = code; // Update with the code part
+               _transtypeController.text = description;
+                _editedtranstypename = description;
+                print(_editedtranstype);
+                print(_editedtranstypename);
+                print(description);
+              });
+            },
+            child: ListTile(
+              title: Text(description),
+            ),
+          );
+        },
+        onSuggestionSelected: (String description) {
+          // No action needed here       
+        },
+        
+        noItemsFoundBuilder: (BuildContext context) {
+          return const SizedBox.shrink();
+        },
+
+         validator: (String? value) {
+          // Validator function
+          if (value == null || value.isEmpty) {
+            return 'Please select a transaction type';
+          }
+          return null; // Return null if validation succeeds
+        },
+      ),
+    ],
+  );
+}
+
+
+Widget buildTypeaheadDropdownBranch(List<String> branchList, String selectedBranch) {
+    TextEditingController _parentCodeController =
+        TextEditingController(text: _selectedBranch);
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Branch',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            TypeAheadFormField<String>(
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: _parentCodeController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                ),
+                enabled:
+                    _isEditing, // Set the enabled property based on edit mode
+              ),
+              suggestionsCallback: (String pattern) async {
+                List<String> branches = await _fetchBranchByQuery(pattern);
+                return branches;
+              },
+              itemBuilder: (BuildContext context, String suggestion) {
+                final List<String> parts =
+                    suggestion.split(' - '); // Split name and number
+                final String branchname =
+                    parts[0]; // Staff name is the first part
+                // Staff number is the second part, you can ignore it in the UI
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _editedParentCode =
+                          parts[1]; // Update the selected staff number
+                      _selectedBranch =
+                          branchname; // Update the selected staff name
+                      _parentCodeController.text =
+                          branchname; // Update the text controller's value
+                    });
+                  },
+                  child: ListTile(
+                    title: Text(branchname), // Display only the staff name
+                  ),
+                );
+              },
+              onSuggestionSelected: (String suggestion) {
+                setState(() {
+                  _selectedBranch = suggestion;
+                  _parentCodeController.text = suggestion;
+                  _editedParentCode = suggestion; // Update _editedUser
+                });
+              },
+              noItemsFoundBuilder: (BuildContext context) {
+                if (_isFetchingDataError) {
+                  return const Text(
+                    'Error fetching data, please try again.',
+                    style: TextStyle(color: Colors.red),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -760,6 +1015,7 @@ class _EditState extends State<Edit> {
   Widget buildTextField(
     String label,
     String value, {
+    String hintText = '',
     bool enabled = true,
     ValueChanged<String>? onChanged,
     IconButton? suffixIcon,
@@ -796,6 +1052,7 @@ class _EditState extends State<Edit> {
                   controller.text = value; // Update the controller value
                 });
               }
+
               onChanged
                   ?.call(value); // Invoke the onChanged callback if provided
             },
@@ -807,6 +1064,7 @@ class _EditState extends State<Edit> {
               border: const OutlineInputBorder(),
               filled: true,
               fillColor: Colors.grey[200],
+              hintText: hintText,
               suffixIcon: suffixIcon,
             ),
           ),
@@ -815,3 +1073,4 @@ class _EditState extends State<Edit> {
     );
   }
 }
+

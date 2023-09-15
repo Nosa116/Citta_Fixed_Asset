@@ -93,7 +93,7 @@ class _DetailsState extends State<Details> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
+            return Text('Try Again (Error): ${snapshot.error}');
           } else if (snapshot.hasData && _assetData != null) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
@@ -110,7 +110,7 @@ class _DetailsState extends State<Details> {
                   buildTextField('Asset User', _assetData!.assetUser),
                   buildTextField('Detail', _assetData!.assetDetail),
                   buildTextField('Manufacturer No', _assetData!.assetManufacturersNum),
-                  buildTextField('Parent Code', _assetData!.parentAssetCode),
+                  buildTextField('Reference', _assetData!.parentAssetCode),
                   buildTextField('Last Maintenance Date', _assetData!.lastMaintenanceDate),
                   buildTextField('Purchase Date', _assetData!.purchaseDate),
                   buildTextField('Location', _assetData!.assetLocationName),

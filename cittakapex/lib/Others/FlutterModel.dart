@@ -65,7 +65,7 @@ class AssetDetails {
       required this.purchaseDate,
       required this.supplier,
       required this.supplierName,
-      required this.model});
+      required this.model, });
 
  @override
   String toString() {
