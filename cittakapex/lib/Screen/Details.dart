@@ -8,8 +8,12 @@ import 'Edit.dart';
 
 class Details extends StatefulWidget {
   final String fixedAssetCode;
-
-  const Details({Key? key, required this.fixedAssetCode}) : super(key: key);
+  final String staffCode;
+  final String Orgcode;
+  const Details(
+      {required this.staffCode,
+      required this.Orgcode,
+      required this.fixedAssetCode});
 
   @override
   _DetailsState createState() => _DetailsState();
@@ -25,6 +29,8 @@ class _DetailsState extends State<Details> {
       MaterialPageRoute(
         builder: (context) => Edit(
           fixedAssetCode: widget.fixedAssetCode,
+          staffCode: widget.staffCode,
+          Orgcode: widget.Orgcode,
         ),
       ),
     );
@@ -49,10 +55,11 @@ class _DetailsState extends State<Details> {
 
   Future<AssetDetails> fetchAssetDetails(String fixedAssetCode) async {
     String url =
-        'https://citta.azure-api.net/Adron/api/FAsset/assetdetails?FixedAssetCode=${widget.fixedAssetCode}';
+        'https://citta.azure-api.net/api/FAsset/assetdetails?FixedAssetCode=${widget.fixedAssetCode}&Org_code=${widget.Orgcode}&Loginstaff=${widget.staffCode}';
 
     final response = await http.get(Uri.parse(url));
-
+    print(widget.Orgcode);
+    print(widget.staffCode);
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print('API Response for Asset Details: $jsonResponse');
@@ -77,7 +84,7 @@ class _DetailsState extends State<Details> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Details'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.green[700],
         actions: [
           IconButton(
             onPressed: () {
@@ -107,13 +114,14 @@ class _DetailsState extends State<Details> {
                   buildTextField('Model', _assetData!.model),
                   buildTextField('Specs', _assetData!.assetspecs),
                   buildTextField('Supplier', _assetData!.supplier),
-                  buildTextField('Asset User', _assetData!.assetUser),
+                  buildTextField('Asset User', _assetData!.assetUserName),
                   buildTextField('Detail', _assetData!.assetDetail),
                   buildTextField('Manufacturer No', _assetData!.assetManufacturersNum),
                   buildTextField('Reference', _assetData!.parentAssetCode),
                   buildTextField('Last Maintenance Date', _assetData!.lastMaintenanceDate),
                   buildTextField('Purchase Date', _assetData!.purchaseDate),
                   buildTextField('Location', _assetData!.assetLocationName),
+                  buildTextField('Branch', _assetData!.branchName),
                   // Add other fields using buildTextField as shown above
                 ],
               ),
@@ -127,11 +135,10 @@ class _DetailsState extends State<Details> {
   }
 
   Widget buildTextField(String label, String value) {
-
-if (label == 'Supplier') {
-    value = _assetData!.supplierName; // Use supplierName value instead of supplier
-  }
-
+    if (label == 'Supplier') {
+      value = _assetData!
+          .supplierName; // Use supplierName value instead of supplier
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

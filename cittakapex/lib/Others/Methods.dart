@@ -1,9 +1,17 @@
-String formatDate(String inputDate) {
-  if (inputDate.length == 8) {
-    String year = inputDate.substring(0, 4);
-    String month = inputDate.substring(4, 6);
-    String day = inputDate.substring(6, 8);
-    return '$day/$month/$year';
-  }
-  return inputDate;
+import 'package:cittakpex/Screen/Login.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import '../Others/Constant.dart';
+
+
+// Function to log out and navigate to the LoginScreen
+void logout(BuildContext context) {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => LoginScreen(), // Replace with your LoginScreen route
+    ),
+  );
 }

@@ -1,29 +1,29 @@
 <dependencies>
   <compile
-      roots="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar:unspecified@jar,C:\Users\lenovo\Desktop\cittakapex\android@@:shared_preferences_android::release,C:\Users\lenovo\Desktop\cittakapex\android@@:permission_handler_android::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_plugin_android_lifecycle::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_keyboard_visibility::release,C:\Users\lenovo\Desktop\cittakapex\android@@:path_provider_android::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_barcode_scanner::release,io.flutter:flutter_embedding_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,androidx.window:window-java:1.0.0-beta04@aar,androidx.window:window:1.0.0-beta04@aar,org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2@jar,org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar,io.flutter:armeabi_v7a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,io.flutter:arm64_v8a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,io.flutter:x86_64_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,androidx.lifecycle:lifecycle-common-java8:2.2.0@jar,androidx.fragment:fragment:1.1.0@aar,androidx.viewpager:viewpager:1.0.0@aar,androidx.loader:loader:1.0.0@aar,androidx.activity:activity:1.0.0@aar,androidx.customview:customview:1.0.0@aar,androidx.core:core:1.6.0@aar,androidx.core:core:1.6.0@aar,androidx.lifecycle:lifecycle-runtime:2.2.0@aar,androidx.savedstate:savedstate:1.0.0@aar,androidx.lifecycle:lifecycle-livedata:2.0.0@aar,androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar,androidx.lifecycle:lifecycle-common:2.2.0@jar,androidx.arch.core:core-runtime:2.0.0@aar,androidx.arch.core:core-common:2.1.0@jar,androidx.versionedparcelable:versionedparcelable:1.1.1@aar,androidx.collection:collection:1.1.0@jar,androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar,androidx.annotation:annotation:1.5.0@jar,org.jetbrains.kotlin:kotlin-stdlib:1.7.10@jar,org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10@jar,org.jetbrains:annotations:13.0@jar,androidx.annotation:annotation-experimental:1.1.0@aar,androidx.tracing:tracing:1.0.0@aar">
+      roots="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar:unspecified@jar,C:\Users\HP\Desktop\cittakapexORG\android@@:shared_preferences_android::release,C:\Users\HP\Desktop\cittakapexORG\android@@:permission_handler_android::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_plugin_android_lifecycle::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_keyboard_visibility::release,C:\Users\HP\Desktop\cittakapexORG\android@@:path_provider_android::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_barcode_scanner::release,io.flutter:flutter_embedding_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,androidx.window:window-java:1.0.0-beta04@aar,androidx.window:window:1.0.0-beta04@aar,org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2@jar,org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar,io.flutter:armeabi_v7a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,io.flutter:arm64_v8a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,io.flutter:x86_64_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,androidx.lifecycle:lifecycle-common-java8:2.2.0@jar,androidx.fragment:fragment:1.1.0@aar,androidx.viewpager:viewpager:1.0.0@aar,androidx.loader:loader:1.0.0@aar,androidx.activity:activity:1.0.0@aar,androidx.customview:customview:1.0.0@aar,androidx.core:core:1.6.0@aar,androidx.core:core:1.6.0@aar,androidx.lifecycle:lifecycle-runtime:2.2.0@aar,androidx.savedstate:savedstate:1.0.0@aar,androidx.lifecycle:lifecycle-livedata:2.0.0@aar,androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar,androidx.lifecycle:lifecycle-common:2.2.0@jar,androidx.arch.core:core-runtime:2.0.0@aar,androidx.arch.core:core-common:2.1.0@jar,androidx.versionedparcelable:versionedparcelable:1.1.1@aar,androidx.collection:collection:1.1.0@jar,androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar,androidx.annotation:annotation:1.5.0@jar,org.jetbrains.kotlin:kotlin-stdlib:1.7.10@jar,org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10@jar,org.jetbrains:annotations:13.0@jar,androidx.annotation:annotation-experimental:1.1.0@aar,androidx.tracing:tracing:1.0.0@aar">
     <dependency
-        name="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar:unspecified@jar"
-        simpleName="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar"/>
+        name="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar:unspecified@jar"
+        simpleName="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:shared_preferences_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:shared_preferences_android::release"
         simpleName="io.flutter.plugins.sharedpreferences:shared_preferences_android"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:permission_handler_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:permission_handler_android::release"
         simpleName="com.baseflow.permissionhandler:permission_handler_android"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_plugin_android_lifecycle::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_plugin_android_lifecycle::release"
         simpleName="io.flutter.plugins.flutter_plugin_android_lifecycle:flutter_plugin_android_lifecycle"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_keyboard_visibility::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_keyboard_visibility::release"
         simpleName="com.jrai.flutter_keyboard_visibility:flutter_keyboard_visibility"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:path_provider_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:path_provider_android::release"
         simpleName="io.flutter.plugins.pathprovider:path_provider_android"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_barcode_scanner::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_barcode_scanner::release"
         simpleName="com.amolg.flutterbarcodescanner:flutter_barcode_scanner"/>
     <dependency
-        name="io.flutter:flutter_embedding_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:flutter_embedding_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:flutter_embedding_release"/>
     <dependency
         name="androidx.window:window-java:1.0.0-beta04@aar"
@@ -44,13 +44,13 @@
         name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar"
         simpleName="org.jetbrains.kotlin:kotlin-stdlib-jdk7"/>
     <dependency
-        name="io.flutter:armeabi_v7a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:armeabi_v7a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:armeabi_v7a_release"/>
     <dependency
-        name="io.flutter:arm64_v8a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:arm64_v8a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:arm64_v8a_release"/>
     <dependency
-        name="io.flutter:x86_64_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:x86_64_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:x86_64_release"/>
     <dependency
         name="androidx.lifecycle:lifecycle-common-java8:2.2.0@jar"
@@ -123,30 +123,30 @@
         simpleName="androidx.tracing:tracing"/>
   </compile>
   <package
-      roots="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar:unspecified@jar,C:\Users\lenovo\Desktop\cittakapex\android@@:shared_preferences_android::release,C:\Users\lenovo\Desktop\cittakapex\android@@:permission_handler_android::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_barcode_scanner::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_plugin_android_lifecycle::release,C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_keyboard_visibility::release,C:\Users\lenovo\Desktop\cittakapex\android@@:path_provider_android::release,io.flutter:flutter_embedding_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,androidx.window:window-java:1.0.0-beta04@aar,androidx.window:window:1.0.0-beta04@aar,org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2@jar,org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar,io.flutter:armeabi_v7a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,io.flutter:arm64_v8a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,io.flutter:x86_64_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar,com.google.android.material:material:1.3.0@aar,androidx.constraintlayout:constraintlayout:2.0.1@aar,androidx.appcompat:appcompat:1.2.0@aar,androidx.lifecycle:lifecycle-common-java8:2.2.0@jar,androidx.legacy:legacy-support-v4:1.0.0@aar,androidx.viewpager2:viewpager2:1.0.0@aar,com.google.android.gms:play-services-vision:20.1.3@aar,com.google.android.gms:play-services-vision-common:19.1.3@aar,com.google.android.gms:play-services-clearcut:17.0.0@aar,com.google.android.gms:play-services-flags:17.0.0@aar,com.google.android.gms:play-services-phenotype:17.0.0@aar,com.google.android.gms:play-services-base:17.4.0@aar,com.google.android.gms:play-services-tasks:17.2.0@aar,com.google.android.gms:play-services-basement:17.4.0@aar,androidx.fragment:fragment:1.1.0@aar,androidx.appcompat:appcompat-resources:1.2.0@aar,androidx.legacy:legacy-support-core-ui:1.0.0@aar,androidx.drawerlayout:drawerlayout:1.0.0@aar,androidx.media:media:1.0.0@aar,androidx.dynamicanimation:dynamicanimation:1.0.0@aar,androidx.legacy:legacy-support-core-utils:1.0.0@aar,androidx.coordinatorlayout:coordinatorlayout:1.1.0@aar,androidx.transition:transition:1.2.0@aar,androidx.vectordrawable:vectordrawable-animated:1.1.0@aar,androidx.vectordrawable:vectordrawable:1.1.0@aar,androidx.viewpager:viewpager:1.0.0@aar,androidx.loader:loader:1.0.0@aar,androidx.activity:activity:1.0.0@aar,androidx.slidingpanelayout:slidingpanelayout:1.0.0@aar,androidx.recyclerview:recyclerview:1.1.0@aar,androidx.customview:customview:1.0.0@aar,androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar,androidx.asynclayoutinflater:asynclayoutinflater:1.0.0@aar,androidx.core:core:1.6.0@aar,androidx.core:core:1.6.0@aar,androidx.lifecycle:lifecycle-runtime:2.2.0@aar,androidx.savedstate:savedstate:1.0.0@aar,androidx.lifecycle:lifecycle-livedata:2.0.0@aar,androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar,androidx.lifecycle:lifecycle-common:2.2.0@jar,androidx.tracing:tracing:1.0.0@aar,androidx.cursoradapter:cursoradapter:1.0.0@aar,androidx.cardview:cardview:1.0.0@aar,androidx.arch.core:core-runtime:2.0.0@aar,androidx.arch.core:core-common:2.1.0@jar,androidx.versionedparcelable:versionedparcelable:1.1.1@aar,androidx.collection:collection:1.1.0@jar,androidx.documentfile:documentfile:1.0.0@aar,androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar,androidx.print:print:1.0.0@aar,androidx.interpolator:interpolator:1.0.0@aar,androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar,androidx.annotation:annotation:1.5.0@jar,org.jetbrains.kotlin:kotlin-stdlib:1.7.10@jar,androidx.annotation:annotation-experimental:1.1.0@aar,org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10@jar,org.jetbrains:annotations:13.0@jar,androidx.constraintlayout:constraintlayout-solver:2.0.1@jar">
+      roots="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar:unspecified@jar,C:\Users\HP\Desktop\cittakapexORG\android@@:shared_preferences_android::release,C:\Users\HP\Desktop\cittakapexORG\android@@:permission_handler_android::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_barcode_scanner::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_plugin_android_lifecycle::release,C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_keyboard_visibility::release,C:\Users\HP\Desktop\cittakapexORG\android@@:path_provider_android::release,io.flutter:flutter_embedding_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,androidx.window:window-java:1.0.0-beta04@aar,androidx.window:window:1.0.0-beta04@aar,org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2@jar,org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30@jar,org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar,io.flutter:armeabi_v7a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,io.flutter:arm64_v8a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,io.flutter:x86_64_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar,com.google.android.material:material:1.3.0@aar,androidx.constraintlayout:constraintlayout:2.0.1@aar,androidx.appcompat:appcompat:1.2.0@aar,androidx.lifecycle:lifecycle-common-java8:2.2.0@jar,androidx.legacy:legacy-support-v4:1.0.0@aar,androidx.viewpager2:viewpager2:1.0.0@aar,com.google.android.gms:play-services-vision:20.1.3@aar,com.google.android.gms:play-services-vision-common:19.1.3@aar,com.google.android.gms:play-services-clearcut:17.0.0@aar,com.google.android.gms:play-services-flags:17.0.0@aar,com.google.android.gms:play-services-phenotype:17.0.0@aar,com.google.android.gms:play-services-base:17.4.0@aar,com.google.android.gms:play-services-tasks:17.2.0@aar,com.google.android.gms:play-services-basement:17.4.0@aar,androidx.fragment:fragment:1.1.0@aar,androidx.appcompat:appcompat-resources:1.2.0@aar,androidx.legacy:legacy-support-core-ui:1.0.0@aar,androidx.drawerlayout:drawerlayout:1.0.0@aar,androidx.media:media:1.0.0@aar,androidx.dynamicanimation:dynamicanimation:1.0.0@aar,androidx.legacy:legacy-support-core-utils:1.0.0@aar,androidx.coordinatorlayout:coordinatorlayout:1.1.0@aar,androidx.transition:transition:1.2.0@aar,androidx.vectordrawable:vectordrawable-animated:1.1.0@aar,androidx.vectordrawable:vectordrawable:1.1.0@aar,androidx.viewpager:viewpager:1.0.0@aar,androidx.loader:loader:1.0.0@aar,androidx.activity:activity:1.0.0@aar,androidx.slidingpanelayout:slidingpanelayout:1.0.0@aar,androidx.recyclerview:recyclerview:1.1.0@aar,androidx.customview:customview:1.0.0@aar,androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar,androidx.asynclayoutinflater:asynclayoutinflater:1.0.0@aar,androidx.core:core:1.6.0@aar,androidx.core:core:1.6.0@aar,androidx.lifecycle:lifecycle-runtime:2.2.0@aar,androidx.savedstate:savedstate:1.0.0@aar,androidx.lifecycle:lifecycle-livedata:2.0.0@aar,androidx.lifecycle:lifecycle-livedata-core:2.0.0@aar,androidx.lifecycle:lifecycle-common:2.2.0@jar,androidx.tracing:tracing:1.0.0@aar,androidx.cursoradapter:cursoradapter:1.0.0@aar,androidx.cardview:cardview:1.0.0@aar,androidx.arch.core:core-runtime:2.0.0@aar,androidx.arch.core:core-common:2.1.0@jar,androidx.versionedparcelable:versionedparcelable:1.1.1@aar,androidx.collection:collection:1.1.0@jar,androidx.documentfile:documentfile:1.0.0@aar,androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar,androidx.print:print:1.0.0@aar,androidx.interpolator:interpolator:1.0.0@aar,androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar,androidx.annotation:annotation:1.5.0@jar,org.jetbrains.kotlin:kotlin-stdlib:1.7.10@jar,androidx.annotation:annotation-experimental:1.1.0@aar,org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10@jar,org.jetbrains:annotations:13.0@jar,androidx.constraintlayout:constraintlayout-solver:2.0.1@jar">
     <dependency
-        name="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar:unspecified@jar"
-        simpleName="__local_aars__:C:\Users\lenovo\Desktop\cittakapex\build\app\intermediates\flutter\release\libs.jar"/>
+        name="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar:unspecified@jar"
+        simpleName="__local_aars__:C:\Users\HP\Desktop\cittakapexORG\build\app\intermediates\flutter\release\libs.jar"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:shared_preferences_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:shared_preferences_android::release"
         simpleName="io.flutter.plugins.sharedpreferences:shared_preferences_android"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:permission_handler_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:permission_handler_android::release"
         simpleName="com.baseflow.permissionhandler:permission_handler_android"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_barcode_scanner::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_barcode_scanner::release"
         simpleName="com.amolg.flutterbarcodescanner:flutter_barcode_scanner"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_plugin_android_lifecycle::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_plugin_android_lifecycle::release"
         simpleName="io.flutter.plugins.flutter_plugin_android_lifecycle:flutter_plugin_android_lifecycle"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:flutter_keyboard_visibility::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:flutter_keyboard_visibility::release"
         simpleName="com.jrai.flutter_keyboard_visibility:flutter_keyboard_visibility"/>
     <dependency
-        name="C:\Users\lenovo\Desktop\cittakapex\android@@:path_provider_android::release"
+        name="C:\Users\HP\Desktop\cittakapexORG\android@@:path_provider_android::release"
         simpleName="io.flutter.plugins.pathprovider:path_provider_android"/>
     <dependency
-        name="io.flutter:flutter_embedding_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:flutter_embedding_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:flutter_embedding_release"/>
     <dependency
         name="androidx.window:window-java:1.0.0-beta04@aar"
@@ -167,13 +167,13 @@
         name="org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10@jar"
         simpleName="org.jetbrains.kotlin:kotlin-stdlib-jdk7"/>
     <dependency
-        name="io.flutter:armeabi_v7a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:armeabi_v7a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:armeabi_v7a_release"/>
     <dependency
-        name="io.flutter:arm64_v8a_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:arm64_v8a_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:arm64_v8a_release"/>
     <dependency
-        name="io.flutter:x86_64_release:1.0.0-1ac611c64eadbd93c5f5aba5494b8fc3b35ee952@jar"
+        name="io.flutter:x86_64_release:1.0.0-767d8c75e898091b925519803830fc2721658d07@jar"
         simpleName="io.flutter:x86_64_release"/>
     <dependency
         name="com.google.android.material:material:1.3.0@aar"

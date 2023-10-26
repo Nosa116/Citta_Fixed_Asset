@@ -4,7 +4,7 @@
             "outputFile": "com.amolg.flutterbarcodescanner.flutter_barcode_scanner-merged_res-22:/values-w820dp-v13/values-w820dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lenovo\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_barcode_scanner-2.0.0\\android\\src\\main\\res\\values-w820dp\\dimens.xml",
+                    "source": "C:\\Users\\HP\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_barcode_scanner-2.0.0\\android\\src\\main\\res\\values-w820dp\\dimens.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "4",
@@ -26,7 +26,7 @@
             "outputFile": "com.amolg.flutterbarcodescanner.flutter_barcode_scanner-mergeReleaseResources-20:/values-w820dp-v13/values-w820dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lenovo\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_barcode_scanner-2.0.0\\android\\src\\main\\res\\values-w820dp\\dimens.xml",
+                    "source": "C:\\Users\\HP\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\flutter_barcode_scanner-2.0.0\\android\\src\\main\\res\\values-w820dp\\dimens.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "4",

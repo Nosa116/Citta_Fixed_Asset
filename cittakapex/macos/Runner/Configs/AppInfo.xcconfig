@@ -8,7 +8,7 @@
 PRODUCT_NAME = cittafixedassets
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.cittafixedassets
+PRODUCT_BUNDLE_IDENTIFIER = com.cittanuvolaa.cittakpex
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.

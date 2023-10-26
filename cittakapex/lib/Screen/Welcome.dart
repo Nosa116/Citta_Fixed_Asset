@@ -21,7 +21,7 @@ class WelcomeScreen extends StatelessWidget {
                 height: 500,
               ),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 1),
             SizedBox(
               width: double.infinity,
               child: RichText(
@@ -41,11 +41,11 @@ class WelcomeScreen extends StatelessWidget {
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
                         color: Colors.blue, // Set color of font to blue
-                        fontFamily: 'brush script mt',
+                        fontFamily: 'brush',
                       ),
                     ),
                     TextSpan(
-                      text: 'kapex',
+                      text: 'kpex',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w900,

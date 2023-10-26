@@ -1,4 +1,4 @@
-package com.example.cittafixedassets
+package com.cittanuvolaa.cittakpex
 
 import io.flutter.embedding.android.FlutterActivity
 

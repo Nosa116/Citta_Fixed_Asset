@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.cittafixedassets.app-mergeDebugResources-21:/values-h360dp-land-v13/values-h360dp-land-v13.xml",
+            "outputFile": "com.cittanuvolaa.cittakpex.app-mergeDebugResources-21:/values-h360dp-land-v13/values-h360dp-land-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lenovo\\.gradle\\caches\\transforms-3\\5cc8db564d46f28c055925bb471009a5\\transformed\\material-1.3.0\\res\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
+                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\5cc8db564d46f28c055925bb471009a5\\transformed\\material-1.3.0\\res\\values-h360dp-land-v13\\values-h360dp-land-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",

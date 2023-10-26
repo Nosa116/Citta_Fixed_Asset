@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.cittafixedassets.app-mergeDebugResources-21:/values-w820dp-v13/values-w820dp-v13.xml",
+            "outputFile": "com.cittanuvolaa.cittakpex.app-mergeDebugResources-21:/values-w820dp-v13/values-w820dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\lenovo\\Desktop\\cittakapex\\build\\flutter_barcode_scanner\\intermediates\\packaged_res\\debug\\values-w820dp-v13\\values-w820dp-v13.xml",
+                    "source": "C:\\Users\\HP\\Desktop\\cittakapexORG\\build\\flutter_barcode_scanner\\intermediates\\packaged_res\\debug\\values-w820dp-v13\\values-w820dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

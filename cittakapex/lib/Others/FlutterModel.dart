@@ -37,6 +37,7 @@ class AssetDetails {
    String supplier;
    String supplierName;
    String assetUser;
+   String assetUserName;
    String assetDetail;
    String assetManufacturersNum;
    String parentAssetCode;
@@ -46,26 +47,32 @@ class AssetDetails {
    String assetLocationName;
    String assetType;
    String assetTypeName;
+   String branchCode;
+   String branchName;
 
   AssetDetails(
       {required this.assetTag,
       required this.description,
       required this.fixedAssetCode,
       required this.manufacturer,
-      required this.assetDetail,
-      required this.assetLocation,
-      required this.assetLocationName,
-      required this.assetManufacturersNum,
-      required this.assetType,
-      required this.assetTypeName,
+      required this.model,
       required this.assetspecs,
-      required this.assetUser,
-      required this.lastMaintenanceDate,
-      required this.parentAssetCode,
-      required this.purchaseDate,
       required this.supplier,
       required this.supplierName,
-      required this.model, });
+       required this.assetUser,
+      required this.assetUserName,
+      required this.assetDetail,
+      required this.assetManufacturersNum,
+      required this.parentAssetCode,
+      required this.lastMaintenanceDate,
+      required this.purchaseDate,
+      required this.assetLocation,
+      required this.assetLocationName,
+      required this.assetType,
+      required this.assetTypeName,
+      required this.branchCode,
+      required this.branchName,
+       });
 
  @override
   String toString() {
@@ -79,6 +86,7 @@ class AssetDetails {
         'supplier: $supplier, '
         'supplierName: $supplierName, '
         'assetUser: $assetUser, '
+        'assetUserName: $assetUserName, '
         'assetDetail: $assetDetail, '
         'assetManufacturersNum: $assetManufacturersNum, '
         'parentAssetCode: $parentAssetCode, '
@@ -88,6 +96,7 @@ class AssetDetails {
         'assetLocationName: $assetLocationName, '
         'assetType: $assetType'
         'assetTypeName: $assetTypeName'
+        'branchName: $branchName'
         ')';
   }
 
@@ -97,20 +106,23 @@ class AssetDetails {
     description: json['description'] ?? 'Description not available',
     fixedAssetCode: json['fixedAssetCode'] ?? 'Unknown',
     manufacturer: json['manufacturer'] ?? 'Unknown',
-    assetDetail: json['assetDetail'] ?? 'Unknown',
-    assetLocation: json['assetLocation'] ?? 'Unknown',
-    assetLocationName: json['assetLocationName'] ?? 'Unknown',
-    assetManufacturersNum: json['assetManufacturersNum'] ?? 'Unknown',
-    assetType: json['assetType'] ?? 'Unknown',
-    assetTypeName: json['assetTypeName'] ?? 'Unknown',
+    model: json['model'] ?? 'Unknown',
     assetspecs: json['assetspecs'] ?? 'Unknown',
-    assetUser: json['assetUser'] ?? 'Unknown',
-    lastMaintenanceDate: json['lastMaintenanceDate'] ?? 'Unknown',
-    parentAssetCode: json['parentAssetCode'] ?? 'Unknown',
-    purchaseDate: json['purchaseDate'] ?? 'Unknown',
     supplier: json['supplier'] ?? 'Unknown',
     supplierName: json['supplierName'] ?? 'Unknown',
-    model: json['model'] ?? 'Unknown',
+    assetUser: json['assetUser'] ?? 'Unknown',
+    assetUserName: json['assetUserName'] ?? 'Unknown',
+    assetDetail: json['assetDetail'] ?? 'Unknown',
+    assetManufacturersNum: json['assetManufacturersNum'] ?? 'Unknown',
+    parentAssetCode: json['parentAssetCode'] ?? 'Unknown',
+    lastMaintenanceDate: json['lastMaintenanceDate'] ?? 'Unknown',
+    purchaseDate: json['purchaseDate'] ?? 'Unknown',
+    assetLocation: json['assetLocation'] ?? 'Unknown',
+    assetLocationName: json['assetLocationName'] ?? 'Unknown',
+    assetType: json['assetType'] ?? 'Unknown',
+    assetTypeName: json['assetTypeName'] ?? 'Unknown',
+    branchCode: json['branchCode'] ?? 'Unknown',
+    branchName: json['branchName'] ?? 'Unknown',
   );
 }
 
@@ -125,15 +137,17 @@ class AssetDetails {
       'Specs': assetspecs,
       'Supplier': supplier,
       'SupplierName': supplierName,
-      'User': assetUser,
+      'assetUser': assetUser,
+      'assetUserName': assetUserName,
       'Detail': assetDetail,
       'Manufacturer No': assetManufacturersNum,
       'Parent Code': parentAssetCode,
       'Last Maintenance Date': lastMaintenanceDate,
       'Purchase Date': purchaseDate,
-      'Location': assetLocation,
+      'assetLocation': assetLocation,
       'assetLocationName': assetLocationName,
       'Type': assetType,
+      'branchName': branchName,
     };
   }
 }
